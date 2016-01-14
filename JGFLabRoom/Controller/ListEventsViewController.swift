@@ -11,7 +11,8 @@ import UIKit
 class ListEventsViewController: UITableViewController {
     
     var typeListEvents: TypeListEvents = .Year
-    var results: [String]?
+    var identifier: String?
+    var results: [[String:String]]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,12 +31,30 @@ class ListEventsViewController: UITableViewController {
             }
             
             switch self.typeListEvents {
-            case .Year:
+            case .Calendar:
                 guard let calendars = EventHelper.sharedInstance.getCalendarNamesFromUser() else {
                     return
                 }
                 self.results = calendars
                 self.tableView.reloadData()
+            case .Year:
+                guard let identifier = self.identifier else {
+                    self.navigationController?.popToRootViewControllerAnimated(true)
+                    return
+                }
+                EventHelper.sharedInstance.getEventYearsFromUser(identifier, completion: { (years) -> () in
+                    self.results = years
+                    self.tableView.reloadData()
+                })
+            case .Event:
+                guard let identifier = self.identifier else {
+                    self.navigationController?.popToRootViewControllerAnimated(true)
+                    return
+                }
+                EventHelper.sharedInstance.getEventsFromUser(identifier, year: Int(self.title!)!, completion: { (events) -> () in
+                    self.results = events
+                    self.tableView.reloadData()
+                })
             default:
                 break
             }
@@ -64,10 +83,12 @@ class ListEventsViewController: UITableViewController {
         if (cell != nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
         }
-        if let results = results {
-            cell!.textLabel!.text = results[indexPath.row]
+        let result = results![indexPath.row]
+        cell!.textLabel!.text = result["title"]
+        if let count = result["events"] {
+            cell!.detailTextLabel!.text = count + " events"
         }
-        //cell!.detailTextLabel!.text = "some text"
+        cell?.accessoryType = .DisclosureIndicator
         return cell!
     }
     
@@ -75,9 +96,18 @@ class ListEventsViewController: UITableViewController {
         let storyboardMain = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
         if let vcToShow = storyboardMain.instantiateViewControllerWithIdentifier("ListEventsVC") as? ListEventsViewController {
             if let results = results {
-                vcToShow.title = results[indexPath.row]
+                let result = results[indexPath.row]
+                switch self.typeListEvents {
+                case .Calendar:
+                    vcToShow.typeListEvents = .Year
+                case .Year:
+                    vcToShow.typeListEvents = .Event
+                default:
+                    break
+                }
+                vcToShow.identifier = result["identifier"]
+                vcToShow.title = result["title"]
             }
-            vcToShow.typeListEvents = .Year
             
             navigationController?.pushViewController(vcToShow, animated: true)
         }

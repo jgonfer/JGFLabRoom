@@ -9,11 +9,11 @@
 import UIKit
 
 enum TypeListEvents {
-    case Calendar, Year, Month, Day
-    static let types: [TypeListEvents] = [.Calendar, .Year, .Month, .Day]
-    static let titles: [String] = ["Calendar", "Year", "Month", "Day"]
+    case Calendar, Year, Month, Day, Event
+    static let types: [TypeListEvents] = [.Calendar, .Year, .Month, .Day, .Event]
+    static let titles: [String] = ["Calendars", "Years", "Months", "Days", "Events"]
     
-    func getImage(type: TypeListEvents) -> UIImage {
-        return UIImage(named: TypeListEvents.titles[type.hashValue])!
+    static func getTitles(type: TypeListEvents) -> String {
+        return TypeListEvents.titles[type.hashValue]
     }
 }

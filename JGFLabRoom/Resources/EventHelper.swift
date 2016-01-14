@@ -35,7 +35,7 @@ class EventHelper {
             dispatch_async(dispatch_get_main_queue(), {
                 completion?(granted: true)
             })
-        case .Denied:
+        case .Restricted, .Denied:
             dispatch_async(dispatch_get_main_queue(), {
                 completion?(granted: false)
             })
@@ -53,19 +53,76 @@ class EventHelper {
     }
     
     func getCalendarsFromUser() -> [EKCalendar] {
-        return eventStore.calendarsForEntityType(EKEntityType.Event)
+        return eventStore.calendarsForEntityType(.Event)
     }
     
-    func getCalendarNamesFromUser() -> [String]? {
+    func getCalendarNamesFromUser() -> [[String:String]]? {
         let calendars = getCalendarsFromUser()
-        var names: [String]?
+        var names: [[String:String]]?
         for calendar: EKCalendar in calendars {
             guard let _ = names else {
-                names = [calendar.title]
+                names = [["identifier": calendar.calendarIdentifier, "title": calendar.title]]
                 continue
             }
-            names?.append(calendar.title)
+            
+            names?.append(["identifier": calendar.calendarIdentifier, "title": calendar.title])
         }
         return names
+    }
+    
+    func getCalendar(identifier: String) -> EKCalendar? {
+        let calendars = getCalendarsFromUser()
+        for calendar: EKCalendar in calendars {
+            if calendar.calendarIdentifier == identifier {
+                return calendar
+            }
+        }
+        return nil
+    }
+    
+    func getEventYearsFromUser(identifier: String, completion: (years: [[String:String]]?) -> ()) {
+        var years: [[String:String]]?
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
+            let calendar = self.getCalendar(identifier)//eventStore.calendarWithIdentifier(identifier)
+            if let calendar = calendar {
+                //let predicate = eventStore.predicateForEventsWithStartDate(NSDate(timeIntervalSince1970: 1), endDate: NSDate(), calendars: [calendar])
+                for year: Int in 1970...2050 {
+                    if let dates = Utils.getStartEndDateForYear(year) {
+                        let predicate = self.eventStore.predicateForEventsWithStartDate(dates.0, endDate: dates.1, calendars: [calendar])
+                        let events = self.eventStore.eventsMatchingPredicate(predicate)
+                        guard events.count > 0 else {
+                            continue
+                        }
+                        guard let _ = years else {
+                            years = [["identifier": identifier, "title": "\(year)", "events": "\(events.count)"]]
+                            continue
+                        }
+                        years?.append(["identifier": "\(identifier)", "title": "\(year)", "events": "\(events.count)"])
+                    }
+                }
+            }
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                completion(years: years)
+            }
+        }
+    }
+    
+    func getEventsFromUser(identifier: String, year: Int, completion: (events: [[String:String]]?) -> ()) {
+        var events: [[String:String]]?
+        let calendar = getCalendar(identifier)//eventStore.calendarWithIdentifier(identifier)
+        if let calendar = calendar {
+            if let dates = Utils.getStartEndDateForYear(year) {
+                let predicate = self.eventStore.predicateForEventsWithStartDate(dates.0, endDate: dates.1, calendars: [calendar])
+                let eventsResult = self.eventStore.eventsMatchingPredicate(predicate)
+                for event: EKEvent in eventsResult {
+                    guard let _ = events else {
+                        events = [["identifier": event.eventIdentifier, "title": event.title, "date": ""]]
+                        continue
+                    }
+                    events?.append(["identifier": event.eventIdentifier, "title": event.title])
+                }
+            }
+        }
+        completion(events: events)
     }
 }

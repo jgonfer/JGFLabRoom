@@ -63,7 +63,8 @@ class EventViewController: UITableViewController {
         case 1:
             let storyboardMain = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
             if let vcToShow = storyboardMain.instantiateViewControllerWithIdentifier("ListEventsVC") as? ListEventsViewController {
-                vcToShow.title = "Calendars"
+                vcToShow.typeListEvents = .Calendar
+                vcToShow.title = TypeListEvents.getTitles(.Calendar)
                 navigationController?.pushViewController(vcToShow, animated: true)
             }
         default:
