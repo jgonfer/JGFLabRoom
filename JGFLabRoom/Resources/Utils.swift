@@ -24,4 +24,64 @@ class Utils {
         }
         return (startDate, endDate)
     }
+    
+    class func getWeekdayThreeCharsFromDate(date: NSDate) -> String {
+        let dayTimePeriodFormatter = NSDateFormatter()
+        dayTimePeriodFormatter.dateFormat = "EEE"
+        
+        return dayTimePeriodFormatter.stringFromDate(date).uppercaseString
+    }
+    
+    class func getWeekdayNameFromDate(date: NSDate) -> String {
+        let dayTimePeriodFormatter = NSDateFormatter()
+        dayTimePeriodFormatter.dateFormat = "EEEE"
+        
+        return dayTimePeriodFormatter.stringFromDate(date).capitalizedString
+    }
+    
+    class func getMonthThreeCharsFromDate(date: NSDate) -> String {
+        let dayTimePeriodFormatter = NSDateFormatter()
+        dayTimePeriodFormatter.dateFormat = "MMM"
+        
+        return dayTimePeriodFormatter.stringFromDate(date).uppercaseString
+    }
+    
+    class func getMonthNameFromDate(date: NSDate) -> String {
+        let dayTimePeriodFormatter = NSDateFormatter()
+        dayTimePeriodFormatter.dateFormat = "MMMM"
+        
+        return dayTimePeriodFormatter.stringFromDate(date).capitalizedString
+    }
+    
+    class func getMonthsArraysForEvents(events: [[String:String]]?) -> (months: [String]?, eventsSorted: [[[String:String]]]?) {
+        guard let events = events else {
+            return (nil, nil)
+        }
+        var months: [String]?
+        var eventsSorted: [[[String:String]]]?
+        for event in events {
+            guard let dateString = event["date"] else {
+                continue
+            }
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "dd-MM-yyyy"
+            var col = 0
+            if let date = dateFormatter.dateFromString(dateString) {
+                let month = getMonthNameFromDate(date)
+                guard let _ = months else {
+                    months = [month]
+                    eventsSorted = [[event]]
+                    continue
+                }
+                guard months!.contains(month) else {
+                    col++
+                    months?.append(month)
+                    eventsSorted?.append([event])
+                    continue
+                }
+                eventsSorted![col].append(event)
+            }
+        }
+        return (months, eventsSorted)
+    }
 }

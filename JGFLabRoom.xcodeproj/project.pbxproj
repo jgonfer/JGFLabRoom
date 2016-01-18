@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1D8514961C47FA5100238A0D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514951C47FA5100238A0D /* Utils.swift */; };
 		1D8514981C48029400238A0D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514971C48029400238A0D /* Constants.swift */; };
+		1D85149F1C4CFAEB00238A0D /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D85149E1C4CFAEB00238A0D /* EventCell.xib */; };
+		1D8514A11C4CFB1600238A0D /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514A01C4CFB1600238A0D /* EventCell.swift */; };
 		6B090B441C46ED6E00DF0DDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B090B431C46ED6E00DF0DDC /* AppDelegate.swift */; };
 		6B090B461C46ED6E00DF0DDC /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B090B451C46ED6E00DF0DDC /* HomeViewController.swift */; };
 		6B090B491C46ED6E00DF0DDC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B090B471C46ED6E00DF0DDC /* Main.storyboard */; };
@@ -42,6 +44,8 @@
 /* Begin PBXFileReference section */
 		1D8514951C47FA5100238A0D /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		1D8514971C48029400238A0D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1D85149E1C4CFAEB00238A0D /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
+		1D8514A01C4CFB1600238A0D /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		6B090B401C46ED6E00DF0DDC /* JGFLabRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JGFLabRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B090B431C46ED6E00DF0DDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6B090B451C46ED6E00DF0DDC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -113,6 +117,8 @@
 				6B090B741C46EE0900DF0DDC /* Model */,
 				6B090B731C46EE0100DF0DDC /* View */,
 				6B090B721C46EDFB00DF0DDC /* Controller */,
+				6B090B471C46ED6E00DF0DDC /* Main.storyboard */,
+				6B090B4C1C46ED6E00DF0DDC /* LaunchScreen.storyboard */,
 				6B090B431C46ED6E00DF0DDC /* AppDelegate.swift */,
 			);
 			path = JGFLabRoom;
@@ -161,8 +167,8 @@
 		6B090B731C46EE0100DF0DDC /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6B090B471C46ED6E00DF0DDC /* Main.storyboard */,
-				6B090B4C1C46ED6E00DF0DDC /* LaunchScreen.storyboard */,
+				1D85149E1C4CFAEB00238A0D /* EventCell.xib */,
+				1D8514A01C4CFB1600238A0D /* EventCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -243,6 +249,7 @@
 				TargetAttributes = {
 					6B090B3F1C46ED6E00DF0DDC = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 9F9N24NG9R;
 					};
 					6B090B531C46ED6E00DF0DDC = {
 						CreatedOnToolsVersion = 7.2;
@@ -279,6 +286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D85149F1C4CFAEB00238A0D /* EventCell.xib in Resources */,
 				6B090B4E1C46ED6E00DF0DDC /* LaunchScreen.storyboard in Resources */,
 				6B090B4B1C46ED6E00DF0DDC /* Assets.xcassets in Resources */,
 				6B090B491C46ED6E00DF0DDC /* Main.storyboard in Resources */,
@@ -307,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B090B461C46ED6E00DF0DDC /* HomeViewController.swift in Sources */,
+				1D8514A11C4CFB1600238A0D /* EventCell.swift in Sources */,
 				6B090B781C46F46500DF0DDC /* ListEventsViewController.swift in Sources */,
 				6B090B7C1C46F4BE00DF0DDC /* TypeListEvents.swift in Sources */,
 				1D8514961C47FA5100238A0D /* Utils.swift in Sources */,
@@ -355,7 +364,6 @@
 				6B090B481C46ED6E00DF0DDC /* Base */,
 			);
 			name = Main.storyboard;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		6B090B4C1C46ED6E00DF0DDC /* LaunchScreen.storyboard */ = {
@@ -364,7 +372,6 @@
 				6B090B4D1C46ED6E00DF0DDC /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

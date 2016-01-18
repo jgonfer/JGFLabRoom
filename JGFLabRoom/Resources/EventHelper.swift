@@ -89,7 +89,9 @@ class EventHelper {
                 for year: Int in 1970...2050 {
                     if let dates = Utils.getStartEndDateForYear(year) {
                         let predicate = self.eventStore.predicateForEventsWithStartDate(dates.0, endDate: dates.1, calendars: [calendar])
-                        let events = self.eventStore.eventsMatchingPredicate(predicate)
+                        let events = self.eventStore.eventsMatchingPredicate(predicate).sort {
+                            $0.startDate.compare($1.startDate) == NSComparisonResult.OrderedAscending
+                        }
                         guard events.count > 0 else {
                             continue
                         }
@@ -113,13 +115,18 @@ class EventHelper {
         if let calendar = calendar {
             if let dates = Utils.getStartEndDateForYear(year) {
                 let predicate = self.eventStore.predicateForEventsWithStartDate(dates.0, endDate: dates.1, calendars: [calendar])
-                let eventsResult = self.eventStore.eventsMatchingPredicate(predicate)
+                let eventsResult = self.eventStore.eventsMatchingPredicate(predicate).sort {
+                    $0.startDate.compare($1.startDate) == NSComparisonResult.OrderedAscending
+                }
                 for event: EKEvent in eventsResult {
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "dd-MM-yyyy"
+                    let dateString = dateFormatter.stringFromDate(event.startDate)
                     guard let _ = events else {
-                        events = [["identifier": event.eventIdentifier, "title": event.title, "date": ""]]
+                        events = [["identifier": event.eventIdentifier, "title": event.title, "date": dateString]]
                         continue
                     }
-                    events?.append(["identifier": event.eventIdentifier, "title": event.title])
+                    events?.append(["identifier": event.eventIdentifier, "title": event.title, "date": dateString])
                 }
             }
         }

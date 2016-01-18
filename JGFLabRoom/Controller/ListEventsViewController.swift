@@ -10,9 +10,13 @@ import UIKit
 
 class ListEventsViewController: UITableViewController {
     
+    let reuseIdentifier = "EventCell"
+    
     var typeListEvents: TypeListEvents = .Year
     var identifier: String?
     var results: [[String:String]]?
+    var resultsSorted: [[[String:String]]]?
+    var months: [String]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +26,7 @@ class ListEventsViewController: UITableViewController {
     
     private func setupController() {
         tableView.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: "cell")
+        tableView.registerNib(UINib(nibName: reuseIdentifier, bundle: nil), forCellReuseIdentifier: reuseIdentifier)
         
         EventHelper.sharedInstance.requestCalendarPermissions { (granted) -> Void in
             guard granted else {
@@ -53,6 +58,9 @@ class ListEventsViewController: UITableViewController {
                 }
                 EventHelper.sharedInstance.getEventsFromUser(identifier, year: Int(self.title!)!, completion: { (events) -> () in
                     self.results = events
+                    let monthsResult = Utils.getMonthsArraysForEvents(events)
+                    self.months = monthsResult.months
+                    self.resultsSorted = monthsResult.eventsSorted
                     self.tableView.reloadData()
                 })
             default:
@@ -62,33 +70,80 @@ class ListEventsViewController: UITableViewController {
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        guard let results = results else {
+            return 1
+        }
+        guard results.count > 0 else {
+            return 1
+        }
+        let result = results[0]
+        guard let _ = result["date"] else {
+            return 1
+        }
+        guard let months = months else {
+            return 1
+        }
+        return months.count
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let months = months else {
+            return ""
+        }
+        return months[section]
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 55
+        guard let results = results else {
+            return 0
+        }
+        let result = results[indexPath.row]
+        guard let _ = result["date"] else {
+            return 55
+        }
+        return 75
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let results = results else {
             return 0
         }
-        
-        return results.count
+        guard let resultsSorted = resultsSorted else {
+            return results.count
+        }
+        return resultsSorted[section].count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let reuseIdentifier = "cell"
-        var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
-        if (cell != nil) {
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
-        }
         let result = results![indexPath.row]
-        cell!.textLabel!.text = result["title"]
-        if let count = result["events"] {
-            cell!.detailTextLabel!.text = count + " events"
+        guard let dateString = result["date"] else {
+            let reuseIdentifier = "cell"
+            var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
+            if (cell != nil) {
+                cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
+            }
+            cell!.textLabel!.text = result["title"]
+            if let count = result["events"] {
+                cell!.detailTextLabel!.text = count + " events"
+            }
+            cell?.accessoryType = .DisclosureIndicator
+            return cell!
         }
-        cell?.accessoryType = .DisclosureIndicator
+        
+        var cell: EventCell? = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as? EventCell
+        if cell == nil {
+            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: reuseIdentifier) as? EventCell
+        }
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        if let date = dateFormatter.dateFromString(dateString) {
+            let monthResults = resultsSorted![indexPath.section]
+            let todayResult = monthResults[indexPath.row]
+            cell?.setupCell(todayResult["title"], date: date)
+            cell?.accessoryType = .None
+        }
+        
         return cell!
     }
     
@@ -102,6 +157,8 @@ class ListEventsViewController: UITableViewController {
                     vcToShow.typeListEvents = .Year
                 case .Year:
                     vcToShow.typeListEvents = .Event
+                case .Event:
+                    return
                 default:
                     break
                 }
