@@ -111,15 +111,26 @@ class ListAppsViewController: UITableViewController {
             }
             return results[indexPath.row].title
         }
-        cell!.textLabel!.text = title
+        cell?.textLabel?.text = title
         cell?.accessoryType = .None
+        
+        guard let results = results else {
+            return cell!
+        }
+        ImageHelper.sharedInstance.imageForUrl(results[indexPath.row].logo, completionHandler:{(image: UIImage?, url: String) in
+            guard let image = image else {
+                return
+            }
+            cell?.imageView?.image = image
+            cell?.layoutSubviews()
+        })
         
         return cell!
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.indexSelected = indexPath
-        performSegueWithIdentifier(kSegueIdListApps, sender: tableView)
+        //performSegueWithIdentifier(kSegueIdListApps, sender: tableView)
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

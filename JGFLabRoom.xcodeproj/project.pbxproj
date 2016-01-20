@@ -10,6 +10,7 @@
 		1D2B8CB81C4E54A600470F59 /* GCDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2B8CB71C4E54A600470F59 /* GCDViewController.swift */; };
 		1D2B8CBB1C4F95F200470F59 /* ConnectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2B8CBA1C4F95F200470F59 /* ConnectionHelper.swift */; };
 		1D30529F1C4FF0FE00F8C38E /* SocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */; };
+		1D3052A11C4FFE1800F8C38E /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */; };
 		1D8514961C47FA5100238A0D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514951C47FA5100238A0D /* Utils.swift */; };
 		1D8514981C48029400238A0D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514971C48029400238A0D /* Constants.swift */; };
 		1D85149F1C4CFAEB00238A0D /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D85149E1C4CFAEB00238A0D /* EventCell.xib */; };
@@ -50,6 +51,7 @@
 		1D2B8CB71C4E54A600470F59 /* GCDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDViewController.swift; sourceTree = "<group>"; };
 		1D2B8CBA1C4F95F200470F59 /* ConnectionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHelper.swift; sourceTree = "<group>"; };
 		1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocialViewController.swift; path = JGFLabRoom/Controller/Social/SocialViewController.swift; sourceTree = SOURCE_ROOT; };
+		1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		1D8514951C47FA5100238A0D /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		1D8514971C48029400238A0D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1D85149E1C4CFAEB00238A0D /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				1D8514971C48029400238A0D /* Constants.swift */,
 				6B090B791C46F49500DF0DDC /* EventHelper.swift */,
 				1D2B8CBA1C4F95F200470F59 /* ConnectionHelper.swift */,
+				1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 				1D2B8CBB1C4F95F200470F59 /* ConnectionHelper.swift in Sources */,
 				1D30529F1C4FF0FE00F8C38E /* SocialViewController.swift in Sources */,
 				1DF739811C4F99500069C5CC /* App.swift in Sources */,
+				1D3052A11C4FFE1800F8C38E /* ImageHelper.swift in Sources */,
 				6B090B7A1C46F49500DF0DDC /* EventHelper.swift in Sources */,
 				1D8514981C48029400238A0D /* Constants.swift in Sources */,
 				1DF739831C4FA78B0069C5CC /* ListAppsViewController.swift in Sources */,
