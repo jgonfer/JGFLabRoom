@@ -25,8 +25,9 @@ class ListEventsViewController: UITableViewController {
     }
     
     private func setupController() {
-        tableView.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: "cell")
-        tableView.registerNib(UINib(nibName: reuseIdentifier, bundle: nil), forCellReuseIdentifier: reuseIdentifier)
+        Utils.registerStandardXibForTableView(tableView, name: "cell")
+        Utils.registerCustomXibForTableView(tableView, name: reuseIdentifier)
+        Utils.cleanBackButtonTitle(navigationController)
         
         EventHelper.sharedInstance.requestCalendarPermissions { (granted) -> Void in
             guard granted else {

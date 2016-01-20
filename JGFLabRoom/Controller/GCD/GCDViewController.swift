@@ -1,29 +1,41 @@
 //
-//  ViewController.swift
+//  GCDViewController.swift
 //  JGFLabRoom
 //
-//  Created by Josep Gonzalez Fernandez on 13/1/16.
+//  Created by Josep González on 19/1/16.
 //  Copyright © 2016 Josep Gonzalez Fernandez. All rights reserved.
 //
 
 import UIKit
 
-class HomeViewController: UITableViewController {
-
-    var results = ["EventKit", "Grand Central Dispatch", "Social"]
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
-    }
+class GCDViewController: UITableViewController {
+    var results = ["QoS: User Initiated", "QoS: User Interactive"]
+    var indexSelected: NSIndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupController()
+        //ConnectionHelper.sharedInstance.getAppsFromAppStore(self)
     }
     
     private func setupController() {
         Utils.registerStandardXibForTableView(tableView, name: "cell")
+        Utils.cleanBackButtonTitle(navigationController)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let indexSelected = indexSelected else {
+            return
+        }
+        switch segue.identifier! {
+        case kSegueIdListApps:
+            if let vcToShow = segue.destinationViewController as? ListAppsViewController {
+                vcToShow.indexSelected = indexSelected
+            }
+        default:
+            break
+        }
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -52,32 +64,14 @@ class HomeViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let title = results[indexPath.row]
-        switch indexPath.row {
-        case 0:
-            let storyboardMain = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-            if let vcToShow = storyboardMain.instantiateViewControllerWithIdentifier("EventVC") as? EventViewController {
-                vcToShow.title = title
-                navigationController?.pushViewController(vcToShow, animated: true)
-            }
-        case 1:
-            let storyboardMain = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-            if let vcToShow = storyboardMain.instantiateViewControllerWithIdentifier("GCDVC") as? GCDViewController {
-                vcToShow.title = title
-                navigationController?.pushViewController(vcToShow, animated: true)
-            }
-        default:
-            break
-        }
+        self.indexSelected = indexPath
+        performSegueWithIdentifier(kSegueIdListApps, sender: tableView)
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
-

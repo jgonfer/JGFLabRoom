@@ -62,6 +62,37 @@
             </objects>
             <point key="canvasLocation" x="2176" y="536"/>
         </scene>
+        <!--GCD View Controller-->
+        <scene sceneID="wZM-Va-KOk">
+            <objects>
+                <tableViewController storyboardIdentifier="GCDVC" id="prD-5G-uKd" userLabel="GCD View Controller" customClass="GCDViewController" customModule="JGFLabRoom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4lZ-vO-Bse">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="z2G-ey-iYZ">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z2G-ey-iYZ" id="n2a-Sj-m56">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="prD-5G-uKd" id="FFn-04-BZw"/>
+                            <outlet property="delegate" destination="prD-5G-uKd" id="r5d-RG-Jg1"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <segue destination="pDr-EN-s7b" kind="show" identifier="showListApps" id="UQC-Cw-Ajf"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dYq-qT-kmu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2176" y="1248"/>
+        </scene>
         <!--List Events View Controller-->
         <scene sceneID="xHA-sM-XVb">
             <objects>
@@ -89,6 +120,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Jd-Nd-zug" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2942" y="536"/>
+        </scene>
+        <!--List Apps View Controller-->
+        <scene sceneID="mQY-Ba-lr3">
+            <objects>
+                <tableViewController id="pDr-EN-s7b" customClass="ListAppsViewController" customModule="JGFLabRoom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="6J3-FK-HyE">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="DbC-AC-VYV">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DbC-AC-VYV" id="OJj-y7-dqy">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="pDr-EN-s7b" id="GX4-wi-gVa"/>
+                            <outlet property="delegate" destination="pDr-EN-s7b" id="pai-wX-Knt"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KTN-JS-ypc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2942" y="1248"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hqH-z7-ROv">

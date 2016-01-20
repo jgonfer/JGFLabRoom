@@ -19,7 +19,7 @@ let singletonEH = EventHelper()
 class EventHelper {
     let eventStore = EKEventStore()
     
-    var delegate: EventHelperDelegate!
+    var delegate: EventHelperDelegate?
     
     init() {
         
@@ -82,10 +82,9 @@ class EventHelper {
     
     func getEventYearsFromUser(identifier: String, completion: (years: [[String:String]]?) -> ()) {
         var years: [[String:String]]?
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) { () -> Void in
             let calendar = self.getCalendar(identifier)//eventStore.calendarWithIdentifier(identifier)
             if let calendar = calendar {
-                //let predicate = eventStore.predicateForEventsWithStartDate(NSDate(timeIntervalSince1970: 1), endDate: NSDate(), calendars: [calendar])
                 for year: Int in 1970...2050 {
                     if let dates = Utils.getStartEndDateForYear(year) {
                         let predicate = self.eventStore.predicateForEventsWithStartDate(dates.0, endDate: dates.1, calendars: [calendar])
@@ -101,11 +100,13 @@ class EventHelper {
                         }
                         years?.append(["identifier": "\(identifier)", "title": "\(year)", "events": "\(events.count)"])
                     }
+                    // As soon as we've readed the @year, we display it
+                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                        completion(years: years)
+                    }
                 }
             }
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                completion(years: years)
-            }
+            // If we'd like to display all the @years at once, we should do it at this point by calling the dispatch_async function
         }
     }
     

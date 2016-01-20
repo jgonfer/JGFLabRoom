@@ -7,3 +7,13 @@
 //
 
 import Foundation
+
+let kUrlApps = "https://itunes.apple.com/search?term=josep+gonzalez+fernandez&country=us&entity=software"
+let kUrlTravelApps = "https://itunes.apple.com/search?term=travel&country=us&entity=software&limit=200"
+let kUrlGameApps = "https://itunes.apple.com/search?term=games&country=us&entity=software&limit=200"
+let kUrlProductivityApps = "https://itunes.apple.com/search?term=productivity&country=us&entity=software&limit=200"
+
+
+// MARK: SEGUES IDENTIFIER
+
+let kSegueIdListApps = "showListApps"

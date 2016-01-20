@@ -21,7 +21,8 @@ class EventViewController: UITableViewController {
     }
     
     private func setupController() {
-        tableView.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: "cell")
+        Utils.registerStandardXibForTableView(tableView, name: "cell")
+        Utils.cleanBackButtonTitle(navigationController)
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
