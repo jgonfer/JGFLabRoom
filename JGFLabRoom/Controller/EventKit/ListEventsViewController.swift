@@ -17,11 +17,19 @@ class ListEventsViewController: UITableViewController {
     var results: [[String:String]]?
     var resultsSorted: [[[String:String]]]?
     var months: [String]?
+    var eventsChecked = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupController()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        if eventsChecked {
+            eventsChecked = false
+            setupController()
+        }
     }
     
     private func setupController() {
@@ -50,6 +58,7 @@ class ListEventsViewController: UITableViewController {
                 }
                 EventHelper.sharedInstance.getEventYearsFromUser(identifier, completion: { (years) -> () in
                     self.results = years
+                    self.eventsChecked = true
                     self.tableView.reloadData()
                 })
             case .Event:
@@ -62,6 +71,7 @@ class ListEventsViewController: UITableViewController {
                     let monthsResult = Utils.getMonthsArraysForEvents(events)
                     self.months = monthsResult.months
                     self.resultsSorted = monthsResult.eventsSorted
+                    self.eventsChecked = true
                     self.tableView.reloadData()
                 })
             default:
@@ -96,7 +106,7 @@ class ListEventsViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         guard let results = results else {
-            return 0
+            return 75
         }
         let result = results[indexPath.row]
         guard let _ = result["date"] else {
@@ -107,7 +117,7 @@ class ListEventsViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let results = results else {
-            return 0
+            return eventsChecked ? 1 : 0
         }
         guard let resultsSorted = resultsSorted else {
             return results.count
@@ -116,8 +126,19 @@ class ListEventsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let result = results![indexPath.row]
-        guard let dateString = result["date"] else {
+        guard let results = results else {
+            let reuseIdentifier = "cell"
+            var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
+            if (cell != nil) {
+                cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
+            }
+            
+            cell!.textLabel!.text = "You don't have events in your calendar."
+            return cell!
+        }
+        
+        let result = results[indexPath.row]
+        guard let _ = result["date"] else {
             let reuseIdentifier = "cell"
             var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
             if (cell != nil) {
@@ -136,14 +157,18 @@ class ListEventsViewController: UITableViewController {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: reuseIdentifier) as? EventCell
         }
         
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy"
-        if let date = dateFormatter.dateFromString(dateString) {
-            let monthResults = resultsSorted![indexPath.section]
-            let todayResult = monthResults[indexPath.row]
-            cell?.setupCell(todayResult["title"], date: date)
-            cell?.accessoryType = .None
+        guard let resSorted = resultsSorted else {
+            return cell!
         }
+            let monthResults = resSorted[indexPath.section]
+            let todayResult = monthResults[indexPath.row]
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "dd-MM-yyyy"
+            if let date = dateFormatter.dateFromString(todayResult["date"]!) {
+                cell?.setupCell(todayResult["title"], date: date)
+                cell?.accessoryType = .None
+                cell?.selectionStyle = .None
+            }
         
         return cell!
     }

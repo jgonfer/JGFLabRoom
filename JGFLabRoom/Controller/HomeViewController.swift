@@ -10,7 +10,8 @@ import UIKit
 
 class HomeViewController: UITableViewController {
 
-    var results = ["EventKit", "Grand Central Dispatch", "Social"]
+    var results = [["EventKit", "Grand Central Dispatch", "Social"], ["My Apps"]]
+    var indexSelected: NSIndexPath?
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
@@ -26,8 +27,17 @@ class HomeViewController: UITableViewController {
         Utils.registerStandardXibForTableView(tableView, name: "cell")
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let indexSelected = indexSelected else {
+            return
+        }
+        let title = results[indexSelected.section][indexSelected.row]
+        let vc = segue.destinationViewController
+        vc.title = title
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -35,7 +45,7 @@ class HomeViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return results.count
+        return results[section].count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -44,7 +54,7 @@ class HomeViewController: UITableViewController {
         if (cell != nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
         }
-        cell!.textLabel!.text = results[indexPath.row]
+        cell!.textLabel!.text = results[indexPath.section][indexPath.row]
         cell?.accessoryType = .DisclosureIndicator
         
         //cell!.detailTextLabel!.text = "some text"
@@ -52,25 +62,24 @@ class HomeViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let title = results[indexPath.row]
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        indexSelected = indexPath
+        
+        guard indexPath.section == 0 else {
+            performSegueWithIdentifier(kSegueIdListApps, sender: tableView)
+            return
+        }
+        
         switch indexPath.row {
         case 0:
-            let storyboardMain = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-            if let vcToShow = storyboardMain.instantiateViewControllerWithIdentifier("EventVC") as? EventViewController {
-                vcToShow.title = title
-                navigationController?.pushViewController(vcToShow, animated: true)
-            }
+            performSegueWithIdentifier(kSegueIdEventKit, sender: tableView)
         case 1:
-            let storyboardMain = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-            if let vcToShow = storyboardMain.instantiateViewControllerWithIdentifier("GCDVC") as? GCDViewController {
-                vcToShow.title = title
-                navigationController?.pushViewController(vcToShow, animated: true)
-            }
+            performSegueWithIdentifier(kSegueIdGCD, sender: tableView)
+        //case 2:
+            //performSegueWithIdentifier(kSegueIdEventKit, sender: tableView)
         default:
             break
         }
-        
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
     override func didReceiveMemoryWarning() {

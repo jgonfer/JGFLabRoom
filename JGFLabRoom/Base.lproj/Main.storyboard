@@ -9,13 +9,13 @@
         <scene sceneID="Fcv-m5-Fpf">
             <objects>
                 <tableViewController id="vWE-9q-UNx" customClass="HomeViewController" customModule="JGFLabRoom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="tVs-Zp-akl">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="tVs-Zp-akl">
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="L8s-Mh-c9i">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="50" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L8s-Mh-c9i" id="N9b-kI-oUV">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -29,6 +29,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Home" id="rnn-Nu-og4"/>
+                    <connections>
+                        <segue destination="IxR-CM-RIG" kind="show" identifier="showEventKit" id="gcR-GJ-Us6"/>
+                        <segue destination="prD-5G-uKd" kind="show" identifier="showGCD" id="Izn-fj-V8g"/>
+                        <segue destination="pDr-EN-s7b" kind="show" identifier="showListApps" id="Ru1-D8-ASK"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XbP-HY-yPL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -39,7 +44,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="EventVC" id="IxR-CM-RIG" customClass="EventViewController" customModule="JGFLabRoom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="5W0-PP-o16">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -57,6 +62,9 @@
                             <outlet property="delegate" destination="IxR-CM-RIG" id="zNa-sI-eqG"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="Pb2-Ew-RO2" kind="show" identifier="showListEvents" id="Dkh-js-DLH"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sp4-zQ-4o1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -67,7 +75,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="GCDVC" id="prD-5G-uKd" userLabel="GCD View Controller" customClass="GCDViewController" customModule="JGFLabRoom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4lZ-vO-Bse">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -91,14 +99,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dYq-qT-kmu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2176" y="1248"/>
+            <point key="canvasLocation" x="2176" y="1505"/>
         </scene>
         <!--List Events View Controller-->
         <scene sceneID="xHA-sM-XVb">
             <objects>
                 <tableViewController storyboardIdentifier="ListEventsVC" id="Pb2-Ew-RO2" customClass="ListEventsViewController" customModule="JGFLabRoom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="e84-Oj-fc7">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -126,7 +134,7 @@
             <objects>
                 <tableViewController id="pDr-EN-s7b" customClass="ListAppsViewController" customModule="JGFLabRoom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="6J3-FK-HyE">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -147,7 +155,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KTN-JS-ypc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2942" y="1248"/>
+            <point key="canvasLocation" x="2942" y="1505"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hqH-z7-ROv">
@@ -173,4 +181,7 @@
             <point key="canvasLocation" x="536" y="536"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Ru1-D8-ASK"/>
+    </inferredMetricsTieBreakers>
 </document>

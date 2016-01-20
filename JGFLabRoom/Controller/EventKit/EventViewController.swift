@@ -25,6 +25,15 @@ class EventViewController: UITableViewController {
         Utils.cleanBackButtonTitle(navigationController)
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let vcToShow = segue.destinationViewController as? ListEventsViewController else {
+            return
+        }
+        
+        vcToShow.typeListEvents = .Calendar
+        vcToShow.title = TypeListEvents.getTitles(.Calendar)
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -62,12 +71,7 @@ class EventViewController: UITableViewController {
         case 0:
             setupCalendarForInsertEvent()
         case 1:
-            let storyboardMain = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-            if let vcToShow = storyboardMain.instantiateViewControllerWithIdentifier("ListEventsVC") as? ListEventsViewController {
-                vcToShow.typeListEvents = .Calendar
-                vcToShow.title = TypeListEvents.getTitles(.Calendar)
-                navigationController?.pushViewController(vcToShow, animated: true)
-            }
+            performSegueWithIdentifier(kSegueIdListEvents, sender: tableView)
         default:
             break
         }

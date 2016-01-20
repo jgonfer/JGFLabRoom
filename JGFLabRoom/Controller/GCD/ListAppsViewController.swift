@@ -20,6 +20,7 @@ class ListAppsViewController: UITableViewController {
         setupController()
         
         guard let indexSelected = indexSelected else {
+            ConnectionHelper.sharedInstance.getAppsFromAppStore(self)
             return
         }
         
@@ -31,8 +32,6 @@ class ListAppsViewController: UITableViewController {
             title = "Top 200 Travel"
             ConnectionHelper.sharedInstance.getTravelAppsFromAppStore(self)
         default:
-            title = "My Apps"
-            ConnectionHelper.sharedInstance.getAppsFromAppStore(self)
             break
         }
     }
@@ -99,17 +98,20 @@ class ListAppsViewController: UITableViewController {
         if (cell != nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
         }
-        guard let results = results else {
-            var dotsStr = ""
-            var counter = 0
-            while counter < dots {
-                dotsStr += "."
-                counter++
+        
+        var title: String {
+            guard let results = results else {
+                var dotsStr = ""
+                var counter = 0
+                while counter < dots {
+                    dotsStr += "."
+                    counter++
+                }
+                return "Downloading data" + dotsStr
             }
-            cell!.textLabel!.text = "Downloading data" + dotsStr
-            return cell!
+            return results[indexPath.row].title
         }
-        cell!.textLabel!.text = results[indexPath.row].title
+        cell!.textLabel!.text = title
         cell?.accessoryType = .None
         
         return cell!
@@ -132,6 +134,11 @@ extension ListAppsViewController: ConnectionHelperDelegate {
     func connectionAppsFinished(apps: [App]?) {
         results = apps
         cancelTimerDownloading()
+        guard let _ = indexSelected else {
+            results?.sortInPlace({ $0.title < $1.title })
+            tableView.reloadData()
+            return
+        }
         tableView.reloadData()
     }
 }

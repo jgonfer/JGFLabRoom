@@ -16,4 +16,7 @@ let kUrlProductivityApps = "https://itunes.apple.com/search?term=productivity&co
 
 // MARK: SEGUES IDENTIFIER
 
+let kSegueIdEventKit = "showEventKit"
+let kSegueIdListEvents = "showListEvents"
+let kSegueIdGCD = "showGCD"
 let kSegueIdListApps = "showListApps"

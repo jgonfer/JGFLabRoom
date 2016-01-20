@@ -32,18 +32,18 @@ class EventHelper {
     func requestCalendarPermissions(completion: ((granted: Bool) -> Void)? = nil) {
         switch EKEventStore.authorizationStatusForEntityType(.Event) {
         case .Authorized:
-            dispatch_async(dispatch_get_main_queue(), {
+            dispatch_async(Utils.GlobalMainQueue, {
                 completion?(granted: true)
             })
         case .Restricted, .Denied:
-            dispatch_async(dispatch_get_main_queue(), {
+            dispatch_async(Utils.GlobalMainQueue, {
                 completion?(granted: false)
             })
         case .NotDetermined:
             // 3
             EKEventStore().requestAccessToEntityType(.Event, completion:
                 {[weak self] (granted: Bool, error: NSError?) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), {
+                    dispatch_async(Utils.GlobalMainQueue, {
                         completion?(granted: granted)
                     })
                 })
@@ -82,7 +82,7 @@ class EventHelper {
     
     func getEventYearsFromUser(identifier: String, completion: (years: [[String:String]]?) -> ()) {
         var years: [[String:String]]?
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) { () -> Void in
+        dispatch_async(Utils.GlobalUserInitiatedQueue) { () -> Void in
             let calendar = self.getCalendar(identifier)//eventStore.calendarWithIdentifier(identifier)
             if let calendar = calendar {
                 for year: Int in 1970...2050 {
@@ -96,12 +96,15 @@ class EventHelper {
                         }
                         guard let _ = years else {
                             years = [["identifier": identifier, "title": "\(year)", "events": "\(events.count)"]]
+                            dispatch_async(Utils.GlobalMainQueue) { () -> Void in
+                                completion(years: years)
+                            }
                             continue
                         }
                         years?.append(["identifier": "\(identifier)", "title": "\(year)", "events": "\(events.count)"])
                     }
                     // As soon as we've readed the @year, we display it
-                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                    dispatch_async(Utils.GlobalMainQueue) { () -> Void in
                         completion(years: years)
                     }
                 }
@@ -112,25 +115,30 @@ class EventHelper {
     
     func getEventsFromUser(identifier: String, year: Int, completion: (events: [[String:String]]?) -> ()) {
         var events: [[String:String]]?
-        let calendar = getCalendar(identifier)//eventStore.calendarWithIdentifier(identifier)
-        if let calendar = calendar {
-            if let dates = Utils.getStartEndDateForYear(year) {
-                let predicate = self.eventStore.predicateForEventsWithStartDate(dates.0, endDate: dates.1, calendars: [calendar])
-                let eventsResult = self.eventStore.eventsMatchingPredicate(predicate).sort {
-                    $0.startDate.compare($1.startDate) == NSComparisonResult.OrderedAscending
-                }
-                for event: EKEvent in eventsResult {
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.dateFormat = "dd-MM-yyyy"
-                    let dateString = dateFormatter.stringFromDate(event.startDate)
-                    guard let _ = events else {
-                        events = [["identifier": event.eventIdentifier, "title": event.title, "date": dateString]]
-                        continue
+        dispatch_async(Utils.GlobalUserInitiatedQueue) { () -> Void in
+            let calendar = self.getCalendar(identifier)//eventStore.calendarWithIdentifier(identifier)
+            if let calendar = calendar {
+                if let dates = Utils.getStartEndDateForYear(year) {
+                    let predicate = self.eventStore.predicateForEventsWithStartDate(dates.0, endDate: dates.1, calendars: [calendar])
+                    let eventsResult = self.eventStore.eventsMatchingPredicate(predicate).sort {
+                        $0.startDate.compare($1.startDate) == NSComparisonResult.OrderedAscending
                     }
-                    events?.append(["identifier": event.eventIdentifier, "title": event.title, "date": dateString])
+                    for event: EKEvent in eventsResult {
+                        let dateFormatter = NSDateFormatter()
+                        dateFormatter.dateFormat = "dd-MM-yyyy"
+                        let dateString = dateFormatter.stringFromDate(event.startDate)
+                        guard let _ = events else {
+                            events = [["identifier": event.eventIdentifier, "title": event.title, "date": dateString]]
+                            continue
+                        }
+                        events?.append(["identifier": event.eventIdentifier, "title": event.title, "date": dateString])
+                    }
+                    dispatch_async(Utils.GlobalMainQueue) { () -> Void in
+                        completion(events: events)
+                    }
                 }
             }
+            // If we'd like to display all the @events at once, we should do it at this point by calling the dispatch_async function
         }
-        completion(events: events)
     }
 }
