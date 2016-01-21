@@ -16,7 +16,6 @@ class GCDViewController: UITableViewController {
         super.viewDidLoad()
         
         setupController()
-        //ConnectionHelper.sharedInstance.getAppsFromAppStore(self)
     }
     
     private func setupController() {

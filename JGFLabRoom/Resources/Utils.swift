@@ -144,4 +144,123 @@ class Utils {
         }
         return (months, eventsSorted)
     }
+    
+    
+    // MARK: COMMON CRYPTO Management ()
+    // MARK: Read this
+    // 1) To get working Common Crypto you need implement a Bridging-Header.h in your project
+    // 2) Then, import in this new file the library with this line: #import <CommonCrypto/CommonCrypto.h>
+    // 3) For last but not less, go to the tab "Build Settings" in your project and search "Bridging Header". In the row result named "Objective-C Bridging Header", type the path of your Bridging Header file. In this project is "JGFLabRoom/Resources/JGFLabRoom-Bridging-Header.h". You can check it by navigating through folders in Finder.
+    // Et voilà! Xcode will recognize everything related to Common Crypto
+    
+    class func generateRandomStringKey() -> String {
+        
+        let bytesCount = 4 // number of bytes
+        var randomNum = ""
+        var randomBytes = [UInt8](count: bytesCount, repeatedValue: 0) // array to hold randoms bytes
+        
+        // Gen random bytes
+        SecRandomCopyBytes(kSecRandomDefault, bytesCount, &randomBytes)
+        
+        // Turn randomBytes into array of hexadecimal strings
+        // Join array of strings into single string
+        randomNum = randomBytes.map({String(format: "%04hhx", $0)}).joinWithSeparator("")
+        return randomNum
+    }
+    
+    static func AES128Encryption(message: String, key: String) -> (data: NSData, text: String)? {
+        let keyString        = key
+        let keyData: NSData! = (keyString as NSString).dataUsingEncoding(NSUTF8StringEncoding) as NSData!
+        let keyBytes         = UnsafeMutablePointer<Void>(keyData.bytes)
+        print("keyLength   = \(keyData.length), keyData   = \(keyData)")
+        
+        let message       = message
+        let data: NSData! = (message as NSString).dataUsingEncoding(NSUTF8StringEncoding) as NSData!
+        let dataLength    = size_t(data.length)
+        let dataBytes     = UnsafeMutablePointer<Void>(data.bytes)
+        print("dataLength  = \(dataLength), data      = \(data)")
+        
+        let cryptData    = NSMutableData(length: Int(dataLength) + kCCBlockSizeAES128)
+        let cryptPointer = UnsafeMutablePointer<Void>(cryptData!.mutableBytes)
+        let cryptLength  = size_t(cryptData!.length)
+        
+        let keyLength              = size_t(kCCKeySizeAES128)
+        let operation: CCOperation = UInt32(kCCEncrypt)
+        let algoritm:  CCAlgorithm = UInt32(kCCAlgorithmAES128)
+        let options:   CCOptions   = UInt32(kCCOptionPKCS7Padding + kCCOptionECBMode)
+        
+        var numBytesEncrypted :size_t = 0
+        
+        let cryptStatus = CCCrypt(operation,
+            algoritm,
+            options,
+            keyBytes, keyLength,
+            nil,
+            dataBytes, dataLength,
+            cryptPointer, cryptLength,
+            &numBytesEncrypted)
+        
+        if UInt32(cryptStatus) == UInt32(kCCSuccess) {
+            //  let x: UInt = numBytesEncrypted
+            cryptData!.length = Int(numBytesEncrypted)
+            print("cryptLength = \(numBytesEncrypted), cryptData = \(cryptData)")
+            
+            // Not all data is a UTF-8 string so Base64 is used
+            let base64cryptString = cryptData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+            print("base64cryptString = \(base64cryptString)")
+            return (cryptData!, base64cryptString)
+            
+        } else {
+            print("Error: \(cryptStatus)")
+            return nil
+        }
+    }
+    
+    static func AES128Decryption(data:NSData, key: String) -> (data: NSData, text: String)? {
+        let keyString        = key
+        let keyData: NSData! = (keyString as NSString).dataUsingEncoding(NSUTF8StringEncoding) as NSData!
+        let keyBytes         = UnsafeMutablePointer<Void>(keyData.bytes)
+        print("keyLength   = \(keyData.length), keyData   = \(keyData)")
+        
+        //let message       = "Don´t try to read this text. Top Secret Stuff"
+        // let data: NSData! = (message as NSString).dataUsingEncoding(NSUTF8StringEncoding) as NSData!
+        let dataLength    = size_t(data.length)
+        let dataBytes     = UnsafeMutablePointer<Void>(data.bytes)
+        print("dataLength  = \(dataLength), data      = \(data)")
+        
+        let cryptData    = NSMutableData(length: Int(dataLength) + kCCBlockSizeAES128)
+        let cryptPointer = UnsafeMutablePointer<Void>(cryptData!.mutableBytes)
+        let cryptLength  = size_t(cryptData!.length)
+        
+        let keyLength              = size_t(kCCKeySizeAES128)
+        let operation: CCOperation = UInt32(kCCDecrypt)
+        let algoritm:  CCAlgorithm = UInt32(kCCAlgorithmAES128)
+        let options:   CCOptions   = UInt32(kCCOptionPKCS7Padding + kCCOptionECBMode)
+        
+        var numBytesEncrypted :size_t = 0
+        
+        let cryptStatus = CCCrypt(operation,
+            algoritm,
+            options,
+            keyBytes, keyLength,
+            nil,
+            dataBytes, dataLength,
+            cryptPointer, cryptLength,
+            &numBytesEncrypted)
+        
+        if UInt32(cryptStatus) == UInt32(kCCSuccess) {
+            //  let x: UInt = numBytesEncrypted
+            cryptData!.length = Int(numBytesEncrypted)
+            print("DecryptcryptLength = \(numBytesEncrypted), Decrypt = \(cryptData)")
+            
+            // Not all data is a UTF-8 string so Base64 is used
+            let base64cryptString = cryptData!.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+            print("base64DecryptString = \(base64cryptString)")
+            print( "utf8 actual string = \(NSString(data: cryptData!, encoding: NSUTF8StringEncoding))");
+            return (cryptData!, base64cryptString)
+        } else {
+            print("Error: \(cryptStatus)")
+            return nil
+        }
+    }
 }

@@ -121,8 +121,14 @@ class ListAppsViewController: UITableViewController {
             guard let image = image else {
                 return
             }
-            cell?.imageView?.image = image
-            cell?.layoutSubviews()
+            if let cell = cell {
+            cell.imageView?.image = image
+            cell.imageView?.layer.cornerRadius = 10.0
+            cell.imageView?.clipsToBounds = true
+            let heightCell = cell.frame.height
+            cell.imageView?.frame.size = CGSizeMake(heightCell*0.75, heightCell*0.75)
+            cell.layoutSubviews()
+            }
         })
         
         return cell!

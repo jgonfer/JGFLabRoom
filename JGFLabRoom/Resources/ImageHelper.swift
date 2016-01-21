@@ -9,9 +9,10 @@
 import UIKit
 
 
-class ImageHelper {
+class ImageHelper: NSObject {
     
     var cache = NSCache()
+    var objs: [String]?
     
     class var sharedInstance: ImageHelper {
         struct Static {
@@ -20,9 +21,28 @@ class ImageHelper {
         return Static.instance
     }
     
+    override init() {
+        super.init()
+        
+        cache = NSCache()
+        cache.evictsObjectsWithDiscardedContent = true
+        cache.delegate = self
+    }
+    
     func imageForUrl(urlString: String, completionHandler:(image: UIImage?, url: String) -> ()) {
         dispatch_async(Utils.GlobalBackgroundQueue, {()in
             let data: NSData? = self.cache.objectForKey(urlString) as? NSData
+            
+            if var objs = self.objs {
+                print("objs != nil")
+                if !objs.contains(urlString) {
+                    print("objs append")
+                    self.objs!.append(urlString)
+                }
+            } else {
+                print("objs == nil")
+                self.objs = [urlString]
+            }
             
             if let goodData = data {
                 let image = UIImage(data: goodData)
@@ -40,7 +60,7 @@ class ImageHelper {
                 
                 if data != nil {
                     let image = UIImage(data: data!)
-                    self.cache.setObject(data!, forKey: urlString)
+                    self.cache.setObject(data!, forKey: urlString, cost: 10)
                     dispatch_async(Utils.GlobalMainQueue, {() in
                         completionHandler(image: image, url: urlString)
                     })
@@ -50,5 +70,28 @@ class ImageHelper {
             downloadTask.resume()
         })
         
+    }
+    
+    func cleanCache() {
+        guard let objs = objs else {
+            return
+        }
+        
+        for obj: String in objs {
+            print("Remove obj: " + obj)
+            guard let _ = cache.objectForKey(obj) else {
+                continue
+            }
+            cache.removeObjectForKey(obj)
+        }
+        self.objs?.removeAll()
+    }
+}
+
+extension ImageHelper: NSCacheDelegate {
+    func cache(cache: NSCache, willEvictObject obj: AnyObject) {
+        if let url = obj.key {
+            print("url" + url!)
+        }
     }
 }
