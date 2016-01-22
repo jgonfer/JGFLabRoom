@@ -10,15 +10,16 @@
 import UIKit
 
 class CommonCryptoViewController: UIViewController {
-    @IBOutlet weak var topInput: UITextField!
-    @IBOutlet weak var bottomInput: UITextField!
+    @IBOutlet weak var topInput: UITextView!
+    @IBOutlet weak var bottomInput: UITextView!
     @IBOutlet weak var originalTitleLabel: UILabel!
-    @IBOutlet weak var originalMessageLabel: UILabel!
+    @IBOutlet weak var originalMessageLabel: UITextView!
     @IBOutlet weak var base64DecryptTitleLabel: UILabel!
-    @IBOutlet weak var base64DecryptMessageLabel: UILabel!
+    @IBOutlet weak var base64DecryptMessageLabel: UITextView!
     
     var randomKey = ""
     var dataEncryptedMessage: NSData?
+    var settingsType: SettingAES?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +52,20 @@ class CommonCryptoViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let settingsType = settingsType else {
+            return
+        }
+        switch segue.identifier! {
+        case kSegueIdListApps:
+            if let vcToShow = segue.destinationViewController as? CCSettingsViewController {
+                vcToShow.settingsType = settingsType
+            }
+        default:
+            break
+        }
+    }
+    
     // MARK: IBAction Methods
     
     @IBAction func encryptMessage(sender: UIButton) {
@@ -58,7 +73,7 @@ class CommonCryptoViewController: UIViewController {
             return
         }
         randomKey = Utils.generateRandomStringKey()
-        if let messageEncrypted = Utils.AES128Encryption(topInput.text!, key: randomKey) {
+        if let messageEncrypted = Utils.AESEncryption(topInput.text!, key: randomKey) {
             dataEncryptedMessage = messageEncrypted.data
             originalTitleLabel.hidden = false
             originalMessageLabel.text = topInput.text!
@@ -86,7 +101,7 @@ class CommonCryptoViewController: UIViewController {
         }
         originalTitleLabel.hidden = true
         originalMessageLabel.text = ""
-        if let messageEncrypted = Utils.AES128Decryption(dataEncryptedMessage, key: randomKey) {
+        if let messageEncrypted = Utils.AESDecryption(dataEncryptedMessage, key: randomKey) {
             base64DecryptTitleLabel.hidden = false
             base64DecryptMessageLabel.text = messageEncrypted.text
             topInput.text = NSString(data: messageEncrypted.data, encoding: NSUTF8StringEncoding) as? String
