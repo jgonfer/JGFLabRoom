@@ -13,7 +13,8 @@ class HomeViewController: UITableViewController {
     let kTagRemoveLabel = 101
     let kHeightCell: CGFloat = 55.0
     
-    var results = [["EventKit", "Grand Central Dispatch", "Common Crypto", "Social"], ["My Apps"], ["Clear Cache"]]
+    let headers = ["Information Access",  "Performance", "Security", "Miscellaneous", ""]
+    let results = [["EventKit", "Social"], ["Grand Central Dispatch"], ["Common Crypto"], ["My Apps"], ["Clear Cache"]]
     var indexSelected: NSIndexPath?
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -24,6 +25,11 @@ class HomeViewController: UITableViewController {
         super.viewDidLoad()
         
         setupController()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     private func setupController() {
@@ -43,6 +49,10 @@ class HomeViewController: UITableViewController {
         return results.count
     }
     
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return headers[section]
+    }
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kHeightCell
     }
@@ -59,7 +69,7 @@ class HomeViewController: UITableViewController {
         }
         
         let title = results[indexPath.section][indexPath.row]
-        if indexPath.section == 2 {
+        if indexPath.section == 4 {
             
             // First we search in the current cell for the label
             if let view = cell!.viewWithTag(kTagRemoveLabel) {
@@ -91,35 +101,64 @@ class HomeViewController: UITableViewController {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         indexSelected = indexPath
         
-        guard indexPath.section == 0 else {
-            switch indexPath.section {
-            case 1:
-                performSegueWithIdentifier(kSegueIdListApps, sender: tableView)
-            case 2:
-                ImageHelper.sharedInstance.cleanCache()
-            default:
-                break
-            }
-            return
-        }
+        let row = indexPath.row
         
-        switch indexPath.row {
+        switch indexPath.section {
+        case 0:
+            sectionSelectedInformationAccess(row)
+        case 1:
+            sectionSelectedPerformance(row)
+        case 2:
+            sectionSelectedSecurity(row)
+        case 3:
+            sectionSelectedMiscellaneous(row)
+        case 4:
+            ImageHelper.sharedInstance.cleanCache()
+        default:
+            break
+        }
+    }
+    
+    
+    // MARK: Sections Selection
+    
+    private func sectionSelectedInformationAccess(row: Int) {
+        switch row {
         case 0:
             performSegueWithIdentifier(kSegueIdEventKit, sender: tableView)
         case 1:
-            performSegueWithIdentifier(kSegueIdGCD, sender: tableView)
-        case 2:
-            performSegueWithIdentifier(kSegueIdCommonCrypto, sender: tableView)
+            // Social selection
+            break
         default:
             break
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    private func sectionSelectedPerformance(row: Int) {
+        switch row {
+        case 0:
+            performSegueWithIdentifier(kSegueIdGCD, sender: tableView)
+        default:
+            break
+        }
     }
-
-
+    
+    private func sectionSelectedSecurity(row: Int) {
+        switch row {
+        case 0:
+            performSegueWithIdentifier(kSegueIdCommonCrypto, sender: tableView)
+        default:
+            break
+        }
+    }
+    
+    private func sectionSelectedMiscellaneous(row: Int) {
+        switch row {
+        case 0:
+            performSegueWithIdentifier(kSegueIdListApps, sender: tableView)
+        default:
+            break
+        }
+    }
 }
 
