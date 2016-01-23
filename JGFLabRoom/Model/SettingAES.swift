@@ -57,7 +57,8 @@ enum SettingAES {
                 "Max Blowfish"]
         case .CCOption:
             return ["PKCS7 Padding",
-                "ECB Mode"]
+                "ECB Mode",
+                "PKCS7 Padding + ECB Mode"]
         }
     }
     
@@ -101,7 +102,8 @@ enum SettingAES {
                 kCCKeySizeMaxBlowfish]
         case .CCOption:
             return [kCCOptionPKCS7Padding,
-                kCCOptionECBMode]
+                kCCOptionECBMode,
+                kCCOptionPKCS7Padding + kCCOptionECBMode]
         }
     }
 }

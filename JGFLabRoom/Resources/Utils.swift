@@ -168,7 +168,7 @@ class Utils {
         return randomNum
     }
     
-    static func AESEncryption(message: String, key: String) -> (data: NSData, text: String)? {
+    static func AESEncryption(message: String, key: String, algorithm: Int, blockSize: Int, contextSize: Int, keySize: Int, option: Int) -> (data: NSData, text: String)? {
         let keyString        = key
         let keyData: NSData! = (keyString as NSString).dataUsingEncoding(NSUTF8StringEncoding) as NSData!
         let keyBytes         = UnsafeMutablePointer<Void>(keyData.bytes)
@@ -216,7 +216,7 @@ class Utils {
         }
     }
     
-    static func AESDecryption(data:NSData, key: String) -> (data: NSData, text: String)? {
+    static func AESDecryption(data:NSData, key: String, algorithm: Int, blockSize: Int, contextSize: Int, keySize: Int, option: Int) -> (data: NSData, text: String)? {
         let keyString        = key
         let keyData: NSData! = (keyString as NSString).dataUsingEncoding(NSUTF8StringEncoding) as NSData!
         let keyBytes         = UnsafeMutablePointer<Void>(keyData.bytes)

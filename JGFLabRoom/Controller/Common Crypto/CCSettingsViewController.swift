@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol CCSettingsViewControllerDelegate {
+    func valueSelected(row: Int)
+}
+
 class CCSettingsViewController: UITableViewController {
+    var delegate: CCSettingsViewControllerDelegate?
+    
     var results: [String]?
     var resultsValue: [Int]?
     
@@ -69,6 +75,7 @@ class CCSettingsViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let results = results else {
             navigationController?.popToRootViewControllerAnimated(true)
+            return 0
         }
         return results.count
     }
@@ -80,32 +87,16 @@ class CCSettingsViewController: UITableViewController {
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
         }
         
-        var title: String {
-            switch settingsType {
-            case .CCAlgorithm:
-                return resultsCCAlgorithm[indexPath.row] as! String
-            case .CCBlockSize:
-                return resultsCCBlockSize[indexPath.row] as! String
-            case .CCContextSize:
-                return resultsCCContextSize[indexPath.row] as! String
-            case .CCKeySize:
-                return resultsCCKeySize[indexPath.row] as! String
-            case .CCOption:
-                return resultsCCOption[indexPath.row] as! String
-            }
-        }
-        
-        cell!.textLabel!.text = results[indexPath.row]
+        cell!.textLabel!.text = results![indexPath.row]
         cell?.accessoryType = .None
         
         return cell!
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.indexSelected = indexPath
-        performSegueWithIdentifier(kSegueIdListApps, sender: tableView)
-        
+        delegate?.valueSelected(indexPath.row)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        navigationController?.popViewControllerAnimated(true)
     }
     
     override func didReceiveMemoryWarning() {

@@ -21,6 +21,7 @@ let kSegueIdListEvents = "showListEvents"
 let kSegueIdGCD = "showGCD"
 let kSegueIdListApps = "showListApps"
 let kSegueIdCommonCrypto = "showCommonCrypto"
+let kSegueIdCCSettings = "showCCSettings"
 
 
 // MARK: COLORS
