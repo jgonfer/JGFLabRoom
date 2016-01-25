@@ -25,7 +25,7 @@ class CommonCryptoViewController: UIViewController {
     
     var randomKey = Utils.generateRandomStringKey()
     var dataEncryptedMessage: NSData?
-    var settingsType: SettingAES?
+    var settingsType: CCSettings?
     var tagSelected: Int?
     var titlesEncryption = ["AES 128", "AES 128", "AES 128", "AES 128", "PKCS7 Padding"]
     var valuesEncryption = [kCCAlgorithmAES128, kCCBlockSizeAES128, kCCContextSizeAES128, kCCKeySizeAES128, kCCOptionPKCS7Padding]
@@ -78,7 +78,7 @@ class CommonCryptoViewController: UIViewController {
         }
         if let vcToShow = segue.destinationViewController as? CCSettingsViewController {
             vcToShow.settingsType = settingsType
-            vcToShow.title = SettingAES.getTitle(settingsType)
+            vcToShow.title = CCSettings.getTitle(settingsType)
             vcToShow.delegate = self
         }
     }
@@ -154,8 +154,8 @@ class CommonCryptoViewController: UIViewController {
 
 extension CommonCryptoViewController: CCSettingsViewControllerDelegate {
     func valueSelected(row: Int) {
-        let titles = SettingAES.getTitlesArray(settingsType!)
-        let values = SettingAES.getValuesArray(settingsType!)
+        let titles = CCSettings.getTitlesArray(settingsType!)
+        let values = CCSettings.getValuesArray(settingsType!)
         titlesEncryption[tagSelected!] = titles[row]
         valuesEncryption[tagSelected!] = values[row]
         

@@ -1,24 +1,22 @@
 //
-//  CCSettingsViewController.swift
+//  SocialOptionsViewController.swift
 //  JGFLabRoom
 //
-//  Created by Josep González on 22/1/16.
+//  Created by Josep González on 25/1/16.
 //  Copyright © 2016 Josep Gonzalez Fernandez. All rights reserved.
 //
 
+/*
+*  MARK: IMPORTANT: For more information about GitHub API
+*  go to https://developer.github.com/v3/
+*/
+
 import UIKit
 
-protocol CCSettingsViewControllerDelegate {
-    func valueSelected(row: Int)
-}
-
-class CCSettingsViewController: UITableViewController {
-    var delegate: CCSettingsViewControllerDelegate?
-    
+class SocialOptionsViewController: UITableViewController {
+    var networkSelected: SNetworks?
     var results: [String]?
-    var resultsValue: [Int]?
-    
-    var settingsType = CCSettings.CCAlgorithm
+    var segues = SNetworks.segues
     var indexSelected: NSIndexPath?
     
     override func viewDidLoad() {
@@ -30,33 +28,18 @@ class CCSettingsViewController: UITableViewController {
     private func setupController() {
         Utils.registerStandardXibForTableView(tableView, name: "cell")
         Utils.cleanBackButtonTitle(navigationController)
-        
-        switch settingsType {
-        case .CCAlgorithm:
-            results = CCSettings.getTitlesArray(.CCAlgorithm)
-            resultsValue = CCSettings.getValuesArray(.CCAlgorithm)
-        case .CCBlockSize:
-            results = CCSettings.getTitlesArray(.CCBlockSize)
-            resultsValue = CCSettings.getValuesArray(.CCBlockSize)
-        case .CCContextSize:
-            results = CCSettings.getTitlesArray(.CCContextSize)
-            resultsValue = CCSettings.getValuesArray(.CCContextSize)
-        case .CCKeySize:
-            results = CCSettings.getTitlesArray(.CCKeySize)
-            resultsValue = CCSettings.getValuesArray(.CCKeySize)
-        case .CCOption:
-            results = CCSettings.getTitlesArray(.CCOption)
-            resultsValue = CCSettings.getValuesArray(.CCOption)
+        if let networkSelected = networkSelected {
+            results = SNetworks.getOptionsArray(networkSelected)
         }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        guard let indexSelected = indexSelected else {
+        guard let networkSelected = networkSelected else {
             return
         }
-        switch segue.identifier! {
-        case kSegueIdListApps:
-            if let vcToShow = segue.destinationViewController as? ListAppsViewController {
+        switch networkSelected {
+        case .GitHub:
+            if let vcToShow = segue.destinationViewController as? SGitHubViewController {
                 vcToShow.indexSelected = indexSelected
             }
         default:
@@ -73,11 +56,10 @@ class CCSettingsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let results = results else {
-            navigationController?.popToRootViewControllerAnimated(true)
+        guard let _ = results else {
             return 0
         }
-        return results.count
+        return results!.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -86,17 +68,29 @@ class CCSettingsViewController: UITableViewController {
         if (cell != nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
         }
-        
         cell!.textLabel!.text = results![indexPath.row]
+        /*
         cell?.accessoryType = .None
-        
+        if let _ = segues[indexPath.row] {
+            cell?.accessoryType = .DisclosureIndicator
+        }
+        */
         return cell!
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        delegate?.valueSelected(indexPath.row)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        navigationController?.popViewControllerAnimated(true)
+        
+        guard let networkSelected = networkSelected else {
+            return
+        }
+        guard let segue = segues[networkSelected.hashValue] else {
+            self.indexSelected = nil
+            return
+        }
+        
+        self.indexSelected = indexPath
+        performSegueWithIdentifier(segue, sender: tableView)
     }
     
     override func didReceiveMemoryWarning() {

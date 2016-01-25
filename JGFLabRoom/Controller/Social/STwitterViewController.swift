@@ -1,24 +1,20 @@
 //
-//  CCSettingsViewController.swift
+//  STwitterViewController.swift
 //  JGFLabRoom
 //
-//  Created by Josep González on 22/1/16.
+//  Created by Josep González on 25/1/16.
 //  Copyright © 2016 Josep Gonzalez Fernandez. All rights reserved.
 //
 
+/*
+ *  MARK: IMPORTANT: For more information about Twitter API
+ *  go to https://dev.twitter.com/oauth/overview
+*/
+
 import UIKit
 
-protocol CCSettingsViewControllerDelegate {
-    func valueSelected(row: Int)
-}
-
-class CCSettingsViewController: UITableViewController {
-    var delegate: CCSettingsViewControllerDelegate?
-    
-    var results: [String]?
-    var resultsValue: [Int]?
-    
-    var settingsType = CCSettings.CCAlgorithm
+class STwitterViewController: UITableViewController {
+    var results = ["Sig in with Twitter"]
     var indexSelected: NSIndexPath?
     
     override func viewDidLoad() {
@@ -30,24 +26,6 @@ class CCSettingsViewController: UITableViewController {
     private func setupController() {
         Utils.registerStandardXibForTableView(tableView, name: "cell")
         Utils.cleanBackButtonTitle(navigationController)
-        
-        switch settingsType {
-        case .CCAlgorithm:
-            results = CCSettings.getTitlesArray(.CCAlgorithm)
-            resultsValue = CCSettings.getValuesArray(.CCAlgorithm)
-        case .CCBlockSize:
-            results = CCSettings.getTitlesArray(.CCBlockSize)
-            resultsValue = CCSettings.getValuesArray(.CCBlockSize)
-        case .CCContextSize:
-            results = CCSettings.getTitlesArray(.CCContextSize)
-            resultsValue = CCSettings.getValuesArray(.CCContextSize)
-        case .CCKeySize:
-            results = CCSettings.getTitlesArray(.CCKeySize)
-            resultsValue = CCSettings.getValuesArray(.CCKeySize)
-        case .CCOption:
-            results = CCSettings.getTitlesArray(.CCOption)
-            resultsValue = CCSettings.getValuesArray(.CCOption)
-        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -73,10 +51,6 @@ class CCSettingsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let results = results else {
-            navigationController?.popToRootViewControllerAnimated(true)
-            return 0
-        }
         return results.count
     }
     
@@ -86,17 +60,18 @@ class CCSettingsViewController: UITableViewController {
         if (cell != nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
         }
+        cell!.textLabel!.text = results[indexPath.row]
+        cell?.accessoryType = .DisclosureIndicator
         
-        cell!.textLabel!.text = results![indexPath.row]
-        cell?.accessoryType = .None
-        
+        //cell!.detailTextLabel!.text = "some text"
         return cell!
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        delegate?.valueSelected(indexPath.row)
+        self.indexSelected = indexPath
+        performSegueWithIdentifier(kSegueIdListApps, sender: tableView)
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        navigationController?.popViewControllerAnimated(true)
     }
     
     override func didReceiveMemoryWarning() {

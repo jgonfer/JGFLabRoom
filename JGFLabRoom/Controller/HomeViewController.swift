@@ -127,7 +127,7 @@ class HomeViewController: UITableViewController {
         case 0:
             performSegueWithIdentifier(kSegueIdEventKit, sender: tableView)
         case 1:
-            // Social selection
+            performSegueWithIdentifier(kSegueIdSocial, sender: tableView)
             break
         default:
             break

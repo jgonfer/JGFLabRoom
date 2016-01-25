@@ -1,25 +1,18 @@
 //
-//  CCSettingsViewController.swift
+//  SGitHubViewController.swift
 //  JGFLabRoom
 //
-//  Created by Josep González on 22/1/16.
+//  Created by Josep González on 25/1/16.
 //  Copyright © 2016 Josep Gonzalez Fernandez. All rights reserved.
 //
 
 import UIKit
 
-protocol CCSettingsViewControllerDelegate {
-    func valueSelected(row: Int)
-}
-
-class CCSettingsViewController: UITableViewController {
-    var delegate: CCSettingsViewControllerDelegate?
-    
-    var results: [String]?
-    var resultsValue: [Int]?
-    
-    var settingsType = CCSettings.CCAlgorithm
+class SGitHubViewController: UITableViewController {
+    var dots = 0
+    var results: [Repo]?
     var indexSelected: NSIndexPath?
+    var timer: NSTimer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,27 +20,47 @@ class CCSettingsViewController: UITableViewController {
         setupController()
     }
     
+    deinit {
+        cancelTimerDownloading()
+    }
+    
     private func setupController() {
         Utils.registerStandardXibForTableView(tableView, name: "cell")
         Utils.cleanBackButtonTitle(navigationController)
+        startTimerDownloading()
         
-        switch settingsType {
-        case .CCAlgorithm:
-            results = CCSettings.getTitlesArray(.CCAlgorithm)
-            resultsValue = CCSettings.getValuesArray(.CCAlgorithm)
-        case .CCBlockSize:
-            results = CCSettings.getTitlesArray(.CCBlockSize)
-            resultsValue = CCSettings.getValuesArray(.CCBlockSize)
-        case .CCContextSize:
-            results = CCSettings.getTitlesArray(.CCContextSize)
-            resultsValue = CCSettings.getValuesArray(.CCContextSize)
-        case .CCKeySize:
-            results = CCSettings.getTitlesArray(.CCKeySize)
-            resultsValue = CCSettings.getValuesArray(.CCKeySize)
-        case .CCOption:
-            results = CCSettings.getTitlesArray(.CCOption)
-            resultsValue = CCSettings.getValuesArray(.CCOption)
+        guard let indexSelected = indexSelected else {
+            ConnectionHelper.sharedInstance.getAppsFromAppStore(self)
+            return
         }
+        
+        title = SNetworks.getOptionsArray(.GitHub)[indexSelected.row]
+        
+        switch indexSelected.row {
+        case 0:
+            ConnectionHelper.sharedInstance.getGameAppsFromAppStore(self)
+        case 1:
+            ConnectionHelper.sharedInstance.getGitHubRepos(self)
+        default:
+            break
+        }
+    }
+    
+    private func startTimerDownloading() {
+        timer?.invalidate()
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "checkDownloadingState", userInfo: nil, repeats: true)
+    }
+    
+    private func cancelTimerDownloading() {
+        timer?.invalidate()
+    }
+    
+    func checkDownloadingState() {
+        dots++
+        if dots > 3 {
+            dots = 0
+        }
+        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -74,8 +87,7 @@ class CCSettingsViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let results = results else {
-            navigationController?.popToRootViewControllerAnimated(true)
-            return 0
+            return 1
         }
         return results.count
     }
@@ -87,20 +99,41 @@ class CCSettingsViewController: UITableViewController {
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
         }
         
-        cell!.textLabel!.text = results![indexPath.row]
+        var title: String? {
+            guard let results = results else {
+                var dotsStr = ""
+                var counter = 0
+                while counter < dots {
+                    dotsStr += "."
+                    counter++
+                }
+                return "Downloading data" + dotsStr
+            }
+            return results[indexPath.row].name
+        }
+        cell?.textLabel?.text = title
         cell?.accessoryType = .None
+        
+        guard let results = results else {
+            return cell!
+        }
         
         return cell!
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        delegate?.valueSelected(indexPath.row)
+        self.indexSelected = indexPath
+        //performSegueWithIdentifier(kSegueIdListApps, sender: tableView)
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        navigationController?.popViewControllerAnimated(true)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+}
+
+extension SGitHubViewController: ConnectionHelperDelegate {
+    
 }

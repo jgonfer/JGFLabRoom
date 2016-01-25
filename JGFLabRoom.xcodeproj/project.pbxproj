@@ -7,12 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D06EBBA1C525D8400929AC5 /* SettingAES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D06EBB91C525D8400929AC5 /* SettingAES.swift */; };
+		1D06EBBA1C525D8400929AC5 /* CCSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D06EBB91C525D8400929AC5 /* CCSettings.swift */; };
 		1D06EBBC1C525EB400929AC5 /* CCSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D06EBBB1C525EB400929AC5 /* CCSettingsViewController.swift */; };
 		1D0914191C512BD800077813 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D0914181C512BD800077813 /* Security.framework */; };
 		1D09141C1C512C4C00077813 /* CommonCryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D09141B1C512C4C00077813 /* CommonCryptoViewController.swift */; };
 		1D2B8CB81C4E54A600470F59 /* GCDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2B8CB71C4E54A600470F59 /* GCDViewController.swift */; };
 		1D2B8CBB1C4F95F200470F59 /* ConnectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2B8CBA1C4F95F200470F59 /* ConnectionHelper.swift */; };
+		1D2DF5391C563CBB00A064AB /* STwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF5381C563CBB00A064AB /* STwitterViewController.swift */; };
+		1D2DF53B1C56476E00A064AB /* SGoogleDriveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF53A1C56476E00A064AB /* SGoogleDriveViewController.swift */; };
+		1D2DF53D1C567F5500A064AB /* Repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF53C1C567F5500A064AB /* Repo.swift */; };
+		1D2DF53F1C5681AD00A064AB /* SGitHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF53E1C5681AD00A064AB /* SGitHubViewController.swift */; };
+		1D2DF5411C56869D00A064AB /* SocialOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF5401C56869D00A064AB /* SocialOptionsViewController.swift */; };
+		1D2DF5431C56878B00A064AB /* SNetworks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF5421C56878B00A064AB /* SNetworks.swift */; };
 		1D30529F1C4FF0FE00F8C38E /* SocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */; };
 		1D3052A11C4FFE1800F8C38E /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */; };
 		1D8514961C47FA5100238A0D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514951C47FA5100238A0D /* Utils.swift */; };
@@ -52,13 +58,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1D06EBB91C525D8400929AC5 /* SettingAES.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingAES.swift; sourceTree = "<group>"; };
+		1D06EBB91C525D8400929AC5 /* CCSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCSettings.swift; sourceTree = "<group>"; };
 		1D06EBBB1C525EB400929AC5 /* CCSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCSettingsViewController.swift; sourceTree = "<group>"; };
 		1D0914181C512BD800077813 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1D09141B1C512C4C00077813 /* CommonCryptoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonCryptoViewController.swift; sourceTree = "<group>"; };
 		1D09141D1C51341300077813 /* JGFLabRoom-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JGFLabRoom-Bridging-Header.h"; sourceTree = "<group>"; };
 		1D2B8CB71C4E54A600470F59 /* GCDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDViewController.swift; sourceTree = "<group>"; };
 		1D2B8CBA1C4F95F200470F59 /* ConnectionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHelper.swift; sourceTree = "<group>"; };
+		1D2DF5381C563CBB00A064AB /* STwitterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STwitterViewController.swift; sourceTree = "<group>"; };
+		1D2DF53A1C56476E00A064AB /* SGoogleDriveViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGoogleDriveViewController.swift; sourceTree = "<group>"; };
+		1D2DF53C1C567F5500A064AB /* Repo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repo.swift; sourceTree = "<group>"; };
+		1D2DF53E1C5681AD00A064AB /* SGitHubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGitHubViewController.swift; sourceTree = "<group>"; };
+		1D2DF5401C56869D00A064AB /* SocialOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialOptionsViewController.swift; sourceTree = "<group>"; };
+		1D2DF5421C56878B00A064AB /* SNetworks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNetworks.swift; sourceTree = "<group>"; };
 		1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocialViewController.swift; path = JGFLabRoom/Controller/Social/SocialViewController.swift; sourceTree = SOURCE_ROOT; };
 		1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		1D8514951C47FA5100238A0D /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -143,15 +155,25 @@
 			isa = PBXGroup;
 			children = (
 				1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */,
+				1D2DF5401C56869D00A064AB /* SocialOptionsViewController.swift */,
+				1D2DF5381C563CBB00A064AB /* STwitterViewController.swift */,
+				1D2DF53A1C56476E00A064AB /* SGoogleDriveViewController.swift */,
+				1D2DF53E1C5681AD00A064AB /* SGitHubViewController.swift */,
 			);
-			name = Social;
-			path = Projects;
+			path = Social;
+			sourceTree = "<group>";
+		};
+		1D2DF5371C563AB000A064AB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1D0914181C512BD800077813 /* Security.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		6B090B371C46ED6E00DF0DDC = {
 			isa = PBXGroup;
 			children = (
-				1D0914181C512BD800077813 /* Security.framework */,
 				6B090B421C46ED6E00DF0DDC /* JGFLabRoom */,
 				6B090B571C46ED6E00DF0DDC /* JGFLabRoomTests */,
 				6B090B621C46ED6E00DF0DDC /* JGFLabRoomUITests */,
@@ -204,6 +226,7 @@
 		6B090B711C46EDEA00DF0DDC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1D2DF5371C563AB000A064AB /* Frameworks */,
 				6B090B4A1C46ED6E00DF0DDC /* Assets.xcassets */,
 				6B090B4F1C46ED6E00DF0DDC /* Info.plist */,
 				1D8514951C47FA5100238A0D /* Utils.swift */,
@@ -240,9 +263,11 @@
 		6B090B741C46EE0900DF0DDC /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				6B090B7B1C46F4BE00DF0DDC /* TypeListEvents.swift */,
 				1DF739801C4F99500069C5CC /* App.swift */,
-				1D06EBB91C525D8400929AC5 /* SettingAES.swift */,
+				1D2DF53C1C567F5500A064AB /* Repo.swift */,
+				1D2DF5421C56878B00A064AB /* SNetworks.swift */,
+				6B090B7B1C46F4BE00DF0DDC /* TypeListEvents.swift */,
+				1D06EBB91C525D8400929AC5 /* CCSettings.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -380,23 +405,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D2DF53B1C56476E00A064AB /* SGoogleDriveViewController.swift in Sources */,
 				6B090B461C46ED6E00DF0DDC /* HomeViewController.swift in Sources */,
-				1D06EBBA1C525D8400929AC5 /* SettingAES.swift in Sources */,
+				1D06EBBA1C525D8400929AC5 /* CCSettings.swift in Sources */,
 				1D2B8CB81C4E54A600470F59 /* GCDViewController.swift in Sources */,
 				1D8514A11C4CFB1600238A0D /* EventCell.swift in Sources */,
 				6B090B781C46F46500DF0DDC /* ListEventsViewController.swift in Sources */,
+				1D2DF53D1C567F5500A064AB /* Repo.swift in Sources */,
 				1D06EBBC1C525EB400929AC5 /* CCSettingsViewController.swift in Sources */,
 				6B090B7C1C46F4BE00DF0DDC /* TypeListEvents.swift in Sources */,
 				1D8514961C47FA5100238A0D /* Utils.swift in Sources */,
+				1D2DF5431C56878B00A064AB /* SNetworks.swift in Sources */,
 				6B090B441C46ED6E00DF0DDC /* AppDelegate.swift in Sources */,
 				6B090B761C46F22300DF0DDC /* EventViewController.swift in Sources */,
 				1D09141C1C512C4C00077813 /* CommonCryptoViewController.swift in Sources */,
 				1D2B8CBB1C4F95F200470F59 /* ConnectionHelper.swift in Sources */,
 				1D30529F1C4FF0FE00F8C38E /* SocialViewController.swift in Sources */,
+				1D2DF53F1C5681AD00A064AB /* SGitHubViewController.swift in Sources */,
 				1DF739811C4F99500069C5CC /* App.swift in Sources */,
 				1D3052A11C4FFE1800F8C38E /* ImageHelper.swift in Sources */,
+				1D2DF5411C56869D00A064AB /* SocialOptionsViewController.swift in Sources */,
 				6B090B7A1C46F49500DF0DDC /* EventHelper.swift in Sources */,
 				1D8514981C48029400238A0D /* Constants.swift in Sources */,
+				1D2DF5391C563CBB00A064AB /* STwitterViewController.swift in Sources */,
 				1DF739831C4FA78B0069C5CC /* ListAppsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

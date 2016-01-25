@@ -22,6 +22,7 @@ extension ConnectionHelperDelegate {
 
 class ConnectionHelper: NSObject, NSURLConnectionDelegate {
     var delegate: ConnectionHelperDelegate?
+    var connection: NSURLConnection?
     
     class var sharedInstance: ConnectionHelper {
         return singletonCH
@@ -44,13 +45,25 @@ class ConnectionHelper: NSObject, NSURLConnectionDelegate {
         startConnection(kUrlGameApps)
     }
     
+    func getGitHubRepos(delegate: ConnectionHelperDelegate?) {
+        self.delegate = delegate
+        startConnection(kUrlGitHubRepos)
+    }
+    
+    
+    // MARK: Connection Method
+    
     private func startConnection(url: String){
         data = NSMutableData()
         let url: NSURL = NSURL(string: url)!
         let request: NSURLRequest = NSURLRequest(URL: url)
-        let connection: NSURLConnection = NSURLConnection(request: request, delegate: self, startImmediately: true)!
-        connection.start()
+        connection?.cancel()
+        connection = NSURLConnection(request: request, delegate: self, startImmediately: true)!
+        connection?.start()
     }
+    
+    
+    // MARK: NSURLConnection Delegate
     
     func connection(connection: NSURLConnection!, didReceiveData data: NSData!){
         self.data.appendData(data)
@@ -74,6 +87,10 @@ class ConnectionHelper: NSObject, NSURLConnectionDelegate {
             })
         case kUrlGameApps:
             parseUrlApps(queue: Utils.GlobalUserInitiatedQueue, completion: { (apps, working) -> () in
+                self.updatedStateForConnection(apps, working: working)
+            })
+        case kUrlGitHubRepos:
+            parseUrlGitHubRepos(queue: Utils.GlobalUserInitiatedQueue, completion: { (apps, working) -> () in
                 self.updatedStateForConnection(apps, working: working)
             })
         default:
@@ -130,6 +147,55 @@ class ConnectionHelper: NSObject, NSURLConnectionDelegate {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         completion(apps: appsStored, working: false)
                     })
+                }
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    private func parseUrlGitHubRepos(queue queue: dispatch_queue_t, completion: (apps: [App]?, working: Bool) -> ()) {
+        dispatch_async(queue) { () -> Void in
+            do {
+                if let json = try NSJSONSerialization.JSONObjectWithData(self.data, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary {
+                    //let jsonResult: Array<NSDictionary>?
+                    print(json)
+                    /*
+                    guard let apps = json["results"] as? Array<NSDictionary> else {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            completion(apps: nil, working: false)
+                        })
+                        return
+                    }
+                    
+                    var appsStored: [App]?
+                    for app: AnyObject in apps {
+                        guard let title = app["trackCensoredName"] as? String else {
+                            continue
+                        }
+                        guard let url = app["trackViewUrl"] as? String else {
+                            continue
+                        }
+                        guard let logo = app["artworkUrl100"] as? String else {
+                            continue
+                        }
+                        
+                        let appStored = App(title: title, url: url, logo: logo)
+                        
+                        guard let _ = appsStored else {
+                            appsStored = [appStored]
+                            continue
+                        }
+                        appsStored?.append(appStored)
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            completion(apps: appsStored, working: true)
+                        })
+                        //print(app)
+                    }
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        completion(apps: appsStored, working: false)
+                    })
+                    */
                 }
             } catch {
                 print("Error: \(error)")

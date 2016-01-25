@@ -1,5 +1,5 @@
 //
-//  SettingAES.swift
+//  CCSettings.swift
 //  JGFLabRoom
 //
 //  Created by Josep González on 22/1/16.
@@ -8,16 +8,16 @@
 
 import Foundation
 
-enum SettingAES {
+enum CCSettings {
     case CCAlgorithm, CCOption, CCKeySize, CCBlockSize, CCContextSize
-    static let types: [SettingAES] = [.CCAlgorithm, .CCOption, .CCKeySize, .CCBlockSize, .CCContextSize]
+    static let types: [CCSettings] = [.CCAlgorithm, .CCOption, .CCKeySize, .CCBlockSize, .CCContextSize]
     static let titles: [String] = ["CCAlgorithm", "CCOption", "CCKeySize", "CCBlockSize", "CCContextSize"]
     
-    static func getTitle(type: SettingAES) -> String {
-        return SettingAES.titles[type.hashValue]
+    static func getTitle(type: CCSettings) -> String {
+        return CCSettings.titles[type.hashValue]
     }
     
-    static func getTitlesArray(settingsType: SettingAES) -> [String] {
+    static func getTitlesArray(settingsType: CCSettings) -> [String] {
         switch settingsType {
         case .CCAlgorithm:
             return ["AES 128",
@@ -62,7 +62,7 @@ enum SettingAES {
         }
     }
     
-    static func getValuesArray(settingsType: SettingAES) -> [Int] {
+    static func getValuesArray(settingsType: CCSettings) -> [Int] {
         switch settingsType {
         case .CCAlgorithm:
             return [kCCAlgorithmAES128,
