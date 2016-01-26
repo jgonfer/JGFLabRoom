@@ -6,11 +6,6 @@
 //  Copyright © 2016 Josep Gonzalez Fernandez. All rights reserved.
 //
 
-/*
-*  MARK: IMPORTANT: For more information about GitHub API
-*  go to https://developer.github.com/v3/
-*/
-
 import UIKit
 
 class SocialOptionsViewController: UITableViewController {

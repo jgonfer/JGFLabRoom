@@ -29,6 +29,8 @@ class Utils {
         return dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
     }
     
+    static let userDefaults = NSUserDefaults.standardUserDefaults()
+    
     
     // MARK: TABLEVIEW Management
     

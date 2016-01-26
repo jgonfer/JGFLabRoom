@@ -20,17 +20,17 @@ class ListAppsViewController: UITableViewController {
         setupController()
         
         guard let indexSelected = indexSelected else {
-            ConnectionHelper.sharedInstance.getAppsFromAppStore(self)
+            ConnectionHelper.sharedInstance.startConnection(kUrlApps, method: .GET, params: nil, delegate: self)
             return
         }
         
         switch indexSelected.row {
         case 0:
             title = "Top 200 Games"
-            ConnectionHelper.sharedInstance.getGameAppsFromAppStore(self)
+            ConnectionHelper.sharedInstance.startConnection(kUrlGameApps, method: .GET, params: nil, delegate: self)
         case 1:
             title = "Top 200 Travel"
-            ConnectionHelper.sharedInstance.getTravelAppsFromAppStore(self)
+            ConnectionHelper.sharedInstance.startConnection(kUrlTravelApps, method: .GET, params: nil, delegate: self)
         default:
             break
         }

@@ -6,6 +6,15 @@
 //  Copyright © 2016 Josep Gonzalez Fernandez. All rights reserved.
 //
 
+/*
+*  MARK: IMPORTANT: For more information about GitHub API
+*  go to https://developer.github.com/v3/
+*
+*  and for OAuth info
+*  go to https://developer.github.com/v3/oauth/
+*
+*/
+
 import UIKit
 
 class SGitHubViewController: UITableViewController {
@@ -14,6 +23,15 @@ class SGitHubViewController: UITableViewController {
     var indexSelected: NSIndexPath?
     var timer: NSTimer?
     
+    var isOAuthLoginInProcess = false
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !isOAuthLoginInProcess {
+            loadInitialData()
+        }        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,17 +48,43 @@ class SGitHubViewController: UITableViewController {
         startTimerDownloading()
         
         guard let indexSelected = indexSelected else {
-            ConnectionHelper.sharedInstance.getAppsFromAppStore(self)
             return
         }
-        
         title = SNetworks.getOptionsArray(.GitHub)[indexSelected.row]
-        
-        switch indexSelected.row {
+    }
+    
+    func loadInitialData() {
+        // We need to check if we already have an OAuth token, or we need to grab one.
+        if !GitHubAPIManager.sharedInstance.hasOAuthToken() {
+            GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler = {
+                (error) -> Void in
+                
+                self.isOAuthLoginInProcess = false
+                
+                print("handlin stuff")
+                if let receivedError = error {
+                    print(error)
+                    // TODO: handle error
+                    // Something went wrong, try again
+                } else {
+                    // If we already have one, we'll get all repositories
+                    self.requestAPICall()
+                }
+            }
+            
+            isOAuthLoginInProcess = true
+            GitHubAPIManager.sharedInstance.startOAuth2Login()
+        } else {
+            requestAPICall()
+        }
+    }
+    
+    private func requestAPICall() {
+        switch self.indexSelected!.row {
         case 0:
-            ConnectionHelper.sharedInstance.getGameAppsFromAppStore(self)
+            ConnectionHelper.sharedInstance.startConnection(kUrlGameApps, method: .GET, params: nil, delegate: self)
         case 1:
-            ConnectionHelper.sharedInstance.getGitHubRepos(self)
+            ConnectionHelper.sharedInstance.startConnection(kUrlGitHubRepos, method: .GET, params: nil, delegate: self)
         default:
             break
         }
@@ -135,5 +179,8 @@ class SGitHubViewController: UITableViewController {
 }
 
 extension SGitHubViewController: ConnectionHelperDelegate {
-    
+    func connectionReposFinished(repos: [Repo]?) {
+        results = repos
+        tableView.reloadData()
+    }
 }

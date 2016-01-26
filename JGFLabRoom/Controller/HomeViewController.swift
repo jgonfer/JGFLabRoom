@@ -14,7 +14,7 @@ class HomeViewController: UITableViewController {
     let kHeightCell: CGFloat = 55.0
     
     let headers = ["Information Access",  "Performance", "Security", "Miscellaneous", ""]
-    let results = [["EventKit", "Social"], ["Grand Central Dispatch"], ["Common Crypto"], ["My Apps"], ["Clear Cache"]]
+    let results = [["EventKit", "OAuth"], ["Grand Central Dispatch"], ["Common Crypto"], ["My Apps"], ["Clear Cache"]]
     var indexSelected: NSIndexPath?
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

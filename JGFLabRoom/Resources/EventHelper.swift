@@ -14,8 +14,6 @@ protocol EventHelperDelegate: class {
     
 }
 
-let singletonEH = EventHelper()
-
 class EventHelper {
     let eventStore = EKEventStore()
     
@@ -25,9 +23,7 @@ class EventHelper {
         
     }
     
-    class var sharedInstance: EventHelper {
-        return singletonEH
-    }
+    static let sharedInstance = EventHelper()
     
     func requestCalendarPermissions(completion: ((granted: Bool) -> Void)? = nil) {
         switch EKEventStore.authorizationStatusForEntityType(.Event) {

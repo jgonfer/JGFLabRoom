@@ -14,12 +14,7 @@ class ImageHelper: NSObject {
     var cache = NSCache()
     var objs: [String]?
     
-    class var sharedInstance: ImageHelper {
-        struct Static {
-            static let instance: ImageHelper = ImageHelper()
-        }
-        return Static.instance
-    }
+    static let sharedInstance = ImageHelper()
     
     override init() {
         super.init()
@@ -33,7 +28,7 @@ class ImageHelper: NSObject {
         dispatch_async(Utils.GlobalBackgroundQueue, {()in
             let data: NSData? = self.cache.objectForKey(urlString) as? NSData
             
-            if var objs = self.objs {
+            if let objs = self.objs {
                 print("objs != nil")
                 if !objs.contains(urlString) {
                     print("objs append")

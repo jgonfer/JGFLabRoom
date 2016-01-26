@@ -14,4 +14,12 @@ class Repo {
     var description: String?
     var ownerLogin: String?
     var url: String?
+    
+    required init(id: String, name: String, description: String, ownerLogin: String, url: String) {
+        self.id = id
+        self.name = name
+        self.description = description
+        self.ownerLogin = ownerLogin
+        self.url = url
+    }
 }
