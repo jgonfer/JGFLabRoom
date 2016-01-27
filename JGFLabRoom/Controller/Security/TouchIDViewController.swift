@@ -14,7 +14,8 @@ class TouchIDViewController: UIViewController {
     @IBOutlet weak var message: UILabel!
     
     let kMsgShowFinger = "Show me your finger 👍"
-    let kMsgFingerOK = "Fingerprint recognized! ✅"
+    let kMsgShowReason = "🌛 Try to dismiss this screen 🌜"
+    let kMsgFingerOK = "Login successful! ✅"
     var context = LAContext()
     
     deinit {
@@ -24,34 +25,61 @@ class TouchIDViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        setupController()
+        updateUI()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"updateUI", name: UIApplicationWillEnterForegroundNotification, object: nil)
+        setupController()
     }
     
     private func setupController() {
         Utils.cleanBackButtonTitle(navigationController)
         
-        updateUI()
+        // Handle when the app becomes active, going from the background to the foreground
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"updateUI", name: UIApplicationWillEnterForegroundNotification, object: nil)
+        
+        // Add right button in the navigation bar to repeat the login process so many times as we want
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: "updateUI")
     }
     
     func updateUI() {
+        // Initialize our context object just in this example, in a real app it shouldn't be necessary. In fact, we should avoid this initialization
+        // The reason is because once our LAContext detects that the login was successfully done, it won't let us repeat the login process again
+        context = LAContext()
+        
+        var policy: LAPolicy?
+        // Depending the iOS version we've selected properly policy system that the user is able to do
+        if #available(iOS 9.0, *) {
+            // iOS 9+ users with Biometric and Passcode verification
+            policy = .DeviceOwnerAuthentication
+        } else {
+            // iOS 9+ users with Biometric and Custom (Fallback button) verification
+            context.localizedFallbackTitle = "Fuu!"
+            policy = .DeviceOwnerAuthenticationWithBiometrics
+        }
+        
         var err: NSError?
-        guard context.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &err) else {
-            
+        
+        // Check if the user is able to use the policy we've selected previously
+        guard context.canEvaluatePolicy(policy!, error: &err) else {
             image.image = UIImage(named: "TouchID_off")
+            // Print the localized message received by the system
             message.text = err?.localizedDescription
             return
         }
         
+        // Great! The user is able to use his/her Touch ID 👍
         image.image = UIImage(named: "TouchID_on")
         message.text = kMsgShowFinger
         
-        context.evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, localizedReason: kMsgShowFinger) {
+        loginProcess(policy!)
+    }
+    
+    private func loginProcess(policy: LAPolicy) {
+        // Start evaluation process with a callback that is executed when the user ends the process successfully or not
+        context.evaluatePolicy(policy, localizedReason: kMsgShowReason) {
             (success: Bool, error: NSError?) -> Void in
             
             dispatch_async(Utils.GlobalMainQueue, { () -> Void in
@@ -62,8 +90,10 @@ class TouchIDViewController: UIViewController {
                             self.message.text = "There was a problem verifying your identity."
                         case LAError.UserCancel.rawValue:
                             self.message.text = "You pressed cancel."
+                        // Fallback button was pressed and an extra login step should be implemented for iOS 8 users.
+                        // By the other hand, iOS 9+ users will use the pasccode verification implemented by the own system.
                         case LAError.UserFallback.rawValue:
-                            self.message.text = "You pressed password."
+                            self.message.text = "You pressed Fuu!."
                         // MARK: IMPORTANT: There are more error states, take a look into the LAError struct
                         default:
                             self.message.text = "Touch ID may not be configured"
@@ -73,6 +103,7 @@ class TouchIDViewController: UIViewController {
                     return
                 }
                 
+                // Good news! Everything went fine 👏
                 self.message.text = self.kMsgFingerOK
             })
         }
