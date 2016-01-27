@@ -14,7 +14,7 @@ class HomeViewController: UITableViewController {
     let kHeightCell: CGFloat = 55.0
     
     let headers = ["Information Access",  "Performance", "Security", "Miscellaneous", ""]
-    let results = [["EventKit", "OAuth"], ["Grand Central Dispatch"], ["Common Crypto"], ["My Apps"], ["Clear Cache"]]
+    let results = [["EventKit", "OAuth"], ["Grand Central Dispatch"], ["Common Crypto", "Keychain"], ["My Apps"], ["Clear Cache"]]
     var indexSelected: NSIndexPath?
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -147,6 +147,10 @@ class HomeViewController: UITableViewController {
         switch row {
         case 0:
             performSegueWithIdentifier(kSegueIdCommonCrypto, sender: tableView)
+        case 1:
+            performSegueWithIdentifier(kSegueIdKeychain, sender: tableView)
+        case 2:
+            performSegueWithIdentifier(kSegueIdTouchID, sender: tableView)
         default:
             break
         }

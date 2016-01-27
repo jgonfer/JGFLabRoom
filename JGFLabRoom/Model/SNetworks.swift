@@ -9,10 +9,10 @@
 import Foundation
 
 enum SNetworks {
-    case Twitter, Facebook, GoogleDrive, Pinterest, Instagram, Vine, LinkedIn, GitHub
-    static let types: [SNetworks] = [.Twitter, .Facebook, .GoogleDrive, .Pinterest, .Instagram, .Vine, .LinkedIn, .GitHub]
-    static let titles: [String] = ["Twitter", "Facebook", "Google Drive", "Pinterest", "Instagram", "Vine", "LinkedIn", "GitHub"]
-    static let segues: [String?] = [nil, nil, nil, nil, nil, nil, nil, kSegueIdSGitHub]
+    case Twitter, Facebook, GoogleDrive, Pinterest, Instagram, Vine, Spotify, LinkedIn, GitHub
+    static let types: [SNetworks] = [.Twitter, .Facebook, .GoogleDrive, .Pinterest, .Instagram, .Vine, .Spotify, .LinkedIn, .GitHub]
+    static let titles: [String] = ["Twitter", "Facebook", "Google Drive", "Pinterest", "Instagram", "Vine", "Spotify", "LinkedIn", "GitHub"]
+    static let segues: [String?] = [nil, nil, nil, nil, nil, nil, nil, nil, kSegueIdSGitHub]
     
     static func getTitle(type: SNetworks) -> String {
         return SNetworks.titles[type.hashValue]
@@ -32,6 +32,8 @@ enum SNetworks {
             return ["Sign in with Instagram"]
         case .Vine:
             return ["Sign in with Vine"]
+        case .Spotify:
+            return ["Sign in with Spotify"]
         case .LinkedIn:
             return ["Sign in with LinkedIn"]
         case .GitHub:

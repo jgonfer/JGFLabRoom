@@ -20,6 +20,10 @@
 		1D2DF5411C56869D00A064AB /* SocialOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF5401C56869D00A064AB /* SocialOptionsViewController.swift */; };
 		1D2DF5431C56878B00A064AB /* SNetworks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF5421C56878B00A064AB /* SNetworks.swift */; };
 		1D2DF5461C576C1400A064AB /* GitHubAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF5451C576C1400A064AB /* GitHubAPIManager.swift */; };
+		1D2DF54F1C58BAE500A064AB /* KeychainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF54E1C58BAE500A064AB /* KeychainViewController.swift */; };
+		1D2DF5511C58BC0500A064AB /* TouchIDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF5501C58BC0500A064AB /* TouchIDViewController.swift */; };
+		1D2DF5531C58C28500A064AB /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF5521C58C28500A064AB /* CustomTextField.swift */; };
+		1D2DF5591C58D50900A064AB /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D2DF5581C58D50900A064AB /* KeychainWrapper.m */; };
 		1D30529F1C4FF0FE00F8C38E /* SocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */; };
 		1D3052A11C4FFE1800F8C38E /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */; };
 		1D8514961C47FA5100238A0D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514951C47FA5100238A0D /* Utils.swift */; };
@@ -73,7 +77,12 @@
 		1D2DF5401C56869D00A064AB /* SocialOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialOptionsViewController.swift; sourceTree = "<group>"; };
 		1D2DF5421C56878B00A064AB /* SNetworks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNetworks.swift; sourceTree = "<group>"; };
 		1D2DF5451C576C1400A064AB /* GitHubAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAPIManager.swift; sourceTree = "<group>"; };
-		1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocialViewController.swift; path = JGFLabRoom/Controller/Social/SocialViewController.swift; sourceTree = SOURCE_ROOT; };
+		1D2DF54E1C58BAE500A064AB /* KeychainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainViewController.swift; sourceTree = "<group>"; };
+		1D2DF5501C58BC0500A064AB /* TouchIDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchIDViewController.swift; sourceTree = "<group>"; };
+		1D2DF5521C58C28500A064AB /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		1D2DF5571C58D50900A064AB /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
+		1D2DF5581C58D50900A064AB /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
+		1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
 		1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		1D8514951C47FA5100238A0D /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		1D8514971C48029400238A0D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -153,7 +162,7 @@
 			path = GCD;
 			sourceTree = "<group>";
 		};
-		1D2B8CB91C4F945200470F59 /* Social */ = {
+		1D2B8CB91C4F945200470F59 /* OAuth */ = {
 			isa = PBXGroup;
 			children = (
 				1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */,
@@ -162,7 +171,7 @@
 				1D2DF53A1C56476E00A064AB /* SGoogleDriveViewController.swift */,
 				1D2DF53E1C5681AD00A064AB /* SGitHubViewController.swift */,
 			);
-			path = Social;
+			path = OAuth;
 			sourceTree = "<group>";
 		};
 		1D2DF5371C563AB000A064AB /* Frameworks */ = {
@@ -179,6 +188,42 @@
 				1D2DF5451C576C1400A064AB /* GitHubAPIManager.swift */,
 			);
 			name = "OAuth Managers";
+			sourceTree = "<group>";
+		};
+		1D2DF5471C58B82E00A064AB /* Information Access */ = {
+			isa = PBXGroup;
+			children = (
+				1D2B8CB51C4E391000470F59 /* EventKit */,
+				1D2B8CB91C4F945200470F59 /* OAuth */,
+			);
+			path = "Information Access";
+			sourceTree = "<group>";
+		};
+		1D2DF5481C58B92C00A064AB /* Performance */ = {
+			isa = PBXGroup;
+			children = (
+				1D2B8CB61C4E396600470F59 /* GCD */,
+			);
+			name = Performance;
+			sourceTree = "<group>";
+		};
+		1D2DF5491C58B93700A064AB /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				1D09141A1C512C2200077813 /* Common Crypto */,
+				1D2DF54E1C58BAE500A064AB /* KeychainViewController.swift */,
+				1D2DF5501C58BC0500A064AB /* TouchIDViewController.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
+		1D2DF5561C58D4FB00A064AB /* KeychainWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				1D2DF5571C58D50900A064AB /* KeychainWrapper.h */,
+				1D2DF5581C58D50900A064AB /* KeychainWrapper.m */,
+			);
+			name = KeychainWrapper;
 			sourceTree = "<group>";
 		};
 		6B090B371C46ED6E00DF0DDC = {
@@ -236,7 +281,6 @@
 		6B090B711C46EDEA00DF0DDC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1D2DF5371C563AB000A064AB /* Frameworks */,
 				6B090B4A1C46ED6E00DF0DDC /* Assets.xcassets */,
 				6B090B4F1C46ED6E00DF0DDC /* Info.plist */,
 				1D8514951C47FA5100238A0D /* Utils.swift */,
@@ -246,6 +290,8 @@
 				1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */,
 				1D09141D1C51341300077813 /* JGFLabRoom-Bridging-Header.h */,
 				1D2DF5441C576C0200A064AB /* OAuth Managers */,
+				1D2DF5561C58D4FB00A064AB /* KeychainWrapper */,
+				1D2DF5371C563AB000A064AB /* Frameworks */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -253,10 +299,9 @@
 		6B090B721C46EDFB00DF0DDC /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				1D2B8CB51C4E391000470F59 /* EventKit */,
-				1D2B8CB61C4E396600470F59 /* GCD */,
-				1D09141A1C512C2200077813 /* Common Crypto */,
-				1D2B8CB91C4F945200470F59 /* Social */,
+				1D2DF5471C58B82E00A064AB /* Information Access */,
+				1D2DF5481C58B92C00A064AB /* Performance */,
+				1D2DF5491C58B93700A064AB /* Security */,
 				6B090B451C46ED6E00DF0DDC /* HomeViewController.swift */,
 			);
 			path = Controller;
@@ -267,6 +312,7 @@
 			children = (
 				1D85149E1C4CFAEB00238A0D /* EventCell.xib */,
 				1D8514A01C4CFB1600238A0D /* EventCell.swift */,
+				1D2DF5521C58C28500A064AB /* CustomTextField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -416,7 +462,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D2DF5531C58C28500A064AB /* CustomTextField.swift in Sources */,
 				1D2DF53B1C56476E00A064AB /* SGoogleDriveViewController.swift in Sources */,
+				1D2DF5511C58BC0500A064AB /* TouchIDViewController.swift in Sources */,
 				6B090B461C46ED6E00DF0DDC /* HomeViewController.swift in Sources */,
 				1D2DF5461C576C1400A064AB /* GitHubAPIManager.swift in Sources */,
 				1D06EBBA1C525D8400929AC5 /* CCSettings.swift in Sources */,
@@ -428,10 +476,12 @@
 				6B090B7C1C46F4BE00DF0DDC /* TypeListEvents.swift in Sources */,
 				1D8514961C47FA5100238A0D /* Utils.swift in Sources */,
 				1D2DF5431C56878B00A064AB /* SNetworks.swift in Sources */,
+				1D2DF54F1C58BAE500A064AB /* KeychainViewController.swift in Sources */,
 				6B090B441C46ED6E00DF0DDC /* AppDelegate.swift in Sources */,
 				6B090B761C46F22300DF0DDC /* EventViewController.swift in Sources */,
 				1D09141C1C512C4C00077813 /* CommonCryptoViewController.swift in Sources */,
 				1D2B8CBB1C4F95F200470F59 /* ConnectionHelper.swift in Sources */,
+				1D2DF5591C58D50900A064AB /* KeychainWrapper.m in Sources */,
 				1D30529F1C4FF0FE00F8C38E /* SocialViewController.swift in Sources */,
 				1D2DF53F1C5681AD00A064AB /* SGitHubViewController.swift in Sources */,
 				1DF739811C4F99500069C5CC /* App.swift in Sources */,

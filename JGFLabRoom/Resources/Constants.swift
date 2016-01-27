@@ -45,6 +45,8 @@ let kSegueIdListEvents = "showListEvents"
 let kSegueIdGCD = "showGCD"
 let kSegueIdListApps = "showListApps"
 let kSegueIdCommonCrypto = "showCommonCrypto"
+let kSegueIdKeychain = "showKeychain"
+let kSegueIdTouchID = "showTouchID"
 let kSegueIdCCSettings = "showCCSettings"
 let kSegueIdSocial = "showSocial"
 let kSegueIdSocialOptions = "showSocialOptions"
@@ -76,3 +78,4 @@ let kErrorMessagesNoToken = "There is no token available"
 // Green Mantis
 let kColorPrimary = UIColor(red:0.39, green:0.8, blue:0.35, alpha:1)
 let kColorPrimaryAlpha = UIColor(red:0.39, green:0.8, blue:0.35, alpha:0.3)
+let kColorWrong = UIColor(red:0.82, green:0.26, blue:0.14, alpha:1)
