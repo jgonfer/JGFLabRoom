@@ -8,6 +8,15 @@
 
 import UIKit
 
+//////////////////////////////////////////////////
+// MARK: IMPORTANT: Stop running app in background
+// We can stop running our app in background by setting "Application does not run in background" to "YES" in our Info.plist
+// If we have a login view at the beginning of our app, this will be displayed if the user press the Home button
+
+// MARK: IMPORTANT: Keychain Wrapper author
+// https://github.com/jrendel/SwiftKeychainWrapper
+//////////////////////////////////////////////////
+
 class KeychainViewController: UIViewController {
     @IBOutlet weak var userInput: CustomTextField!
     @IBOutlet weak var passInput: CustomTextField!
@@ -17,12 +26,20 @@ class KeychainViewController: UIViewController {
     @IBOutlet weak var userLabel: UILabel!
     @IBOutlet weak var passLabel: UILabel!
     
-    let MyKeychainWrapper = KeychainWrapper()
     let kTagButtonCreateLogin = 10
     let kTagButtonLogin = 11
     
     let kTagTextFieldUser = 0
     let kTagTextFieldPass = 1
+    
+    // Old version of KeychainWrapper written in Objective-C
+    //let kcPassword = MyKeychainWrapper.myObjectForKey("v_Data")
+    // New version of KeychainWrapper written in Swift
+    //let kLoginKey = kSecValueData
+    let kLoginKey = "login"
+    
+    // Old version of KeychainWrapper
+    //let MyKeychainWrapper = KeychainWrapper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,20 +72,31 @@ class KeychainViewController: UIViewController {
     }
     
     private func updateLoginInfo() {
+        // Check if we've created our credentials
         let hasLogin = userDefaults.boolForKey("keychainHasLogin")
         
         if hasLogin {
+            // Setup UI for login state
             loginButton.setTitle("Log In", forState: .Normal)
             userLabel.text = userDefaults.valueForKey("keychainUsername") as? String
-            let pass = MyKeychainWrapper.myObjectForKey("v_Data") as! String
+            // Old version of KeychainWrapper
+            //let pass = MyKeychainWrapper.myObjectForKey(kLoginKey) as? String ?? ""
+            // New version of KeychainWrapper
+            guard let pass = KeychainWrapper.stringForKey(kLoginKey) else {
+                cleanLoginInfo(cleanLoginButton)
+                return
+            }
             var passCoded = ""
-            for _ in 0...pass.characters.count-1 {
-                passCoded += "•"
+            if pass.characters.count > 0 {
+                for _ in 0...pass.characters.count-1 {
+                    passCoded += "•"
+                }
             }
             passLabel.text = passCoded
             loginButton.tag = kTagButtonLogin
             resultLabel.text = "Try to Log In!"
         } else {
+            // Setup UI for create credentials state
             loginButton.setTitle("Create", forState: .Normal)
             userLabel.text = "---"
             passLabel.text = "---"
@@ -81,14 +109,23 @@ class KeychainViewController: UIViewController {
     }
     
     func dismissKeyboard() {
+        // Stop focus on both textfields
         userInput.resignFirstResponder()
         passInput.resignFirstResponder()
     }
     
     private func checkLogin() -> Bool {
         let kcUsername = userDefaults.valueForKey("keychainUsername")
-        let kcPassword = MyKeychainWrapper.myObjectForKey("v_Data")
-        guard userInput.text! == kcUsername as? String && passInput.text! == kcPassword as? String else {
+        // Old version of KeychainWrapper
+        //let kcPassword = MyKeychainWrapper.myObjectForKey("v_Data")
+        // New version of KeychainWrapper
+        
+        // Check if there is a Password set in our Keychain
+        guard let kcPassword = KeychainWrapper.stringForKey(kLoginKey) else {
+            return false
+        }
+        // Check if our credentials match what the user has written in the textfields
+        guard userInput.text! == kcUsername as? String && passInput.text! == kcPassword else {
             return false
         }
         return true
@@ -112,13 +149,16 @@ class KeychainViewController: UIViewController {
             break
         }
         
+        // Check if both textfields have text
         guard !userInput.text!.isEmpty && !passInput.text!.isEmpty else {
             resultLabel.text = message
             resultLabel.textColor = kColorWrong
             return
         }
         
+        // Check if we are doing the login process
         guard sender.tag == kTagButtonLogin else {
+            // If not we are creating new credentials to log in later
             let hasLogin = userDefaults.boolForKey("keychainHasLogin")
             if !hasLogin {
                 userDefaults.setValue(user, forKey: "keychainUsername")
@@ -126,8 +166,15 @@ class KeychainViewController: UIViewController {
             userDefaults.setBool(true, forKey: "keychainHasLogin")
             userDefaults.synchronize()
             
-            MyKeychainWrapper.mySetObject(pass, forKey: kSecValueData)
-            MyKeychainWrapper.writeToKeychain()
+            // Old version of KeychainWrapper
+            //MyKeychainWrapper.mySetObject(pass, forKey: kLoginKey)
+            //MyKeychainWrapper.writeToKeychain()
+            // New version of KeychainWrapper
+            guard KeychainWrapper.setString(pass, forKey: kLoginKey) else {
+                cleanLoginInfo(cleanLoginButton)
+                return
+            }
+            
             sender.tag = kTagButtonLogin
             
             updateLoginInfo()
@@ -137,6 +184,7 @@ class KeychainViewController: UIViewController {
         
         let success = self.checkLogin()
         
+        // Show result of the login process
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.resultLabel.alpha = 0
             }, completion: { (Bool) -> Void in
@@ -153,24 +201,33 @@ class KeychainViewController: UIViewController {
         userDefaults.setValue("", forKey: "keychainUsername")
         userDefaults.synchronize()
         
-        MyKeychainWrapper.mySetObject("", forKey: kSecValueData)
-        MyKeychainWrapper.writeToKeychain()
+        // Old version of KeychainWrapper
+        //MyKeychainWrapper.mySetObject("", forKey: kLoginKey)
+        //MyKeychainWrapper.writeToKeychain()
+        // New version of KeychainWrapper
+        KeychainWrapper.removeObjectForKey(kLoginKey)
         
         updateLoginInfo()
     }
 }
 
+// MARK: UITextField Delegate
 extension KeychainViewController: UITextFieldDelegate {
+    // We need to handle when the user press Next button or Done button
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        // Stop focus the current textfield
         textField.resignFirstResponder()
         
+        // Check if the current textfield is the Password textfield with the Done button
         guard textField.tag == kTagTextFieldPass else {
+            // If not we focus on the next textfield
             if let view = view.viewWithTag(textField.tag + 1) {
                 view.becomeFirstResponder()
             }
             return true
         }
         
+        // If it's the PAssword texfield we start the login process
         logIn(loginButton)
         return true
     }
