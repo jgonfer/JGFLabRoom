@@ -17,8 +17,14 @@ let kApiTwitterConsumerecret = "DW02qNxB9NbI7enPdng7JmSS1krOLmbnWwVPEuo92eI6PX3F
 let kApiTwitterAccessToken = "299522050-hb4KjuNZB8cdsYSE7siYaVUi3DKydT91uMLeWq3X"
 let kApiTwitterAccessTokenSecret = "U5fqldL0ZiNzpjymUWxzguEdCobOGuiOhQSCSh7TxK9Aq"
 
+let kApiFacebookAppId = "991680990875333"
+let kApiFacebookAppSecret = "cd081e29e4a3e60ce94111fbe900dd2a"
+
 let kApiGoogleDriveConsumerKey = "643943608923-8g6rebcsiakcvc0qsk564bisk0p5ibqs.apps.googleusercontent.com"
 let kApiGoogleDriveConsumerSecret = "ghNixvFtLYwaRtWvlv8Mbzkh"
+
+let kApiSpotifyClientId = "3c9218af7c314198985ae6733b47afd4"
+let kApiSpotifyClientSecret = "d31263e050f34f83a7ce219dd991cb0c"
 
 let kApiGitHubClientId = "5072d51c60d715e79c95"
 let kApiGitHubClientSecret = "28af606db9df21a2ac4c4eb72ddd00306790fc00"
@@ -55,6 +61,7 @@ let kSegueIdCCSettings = "showCCSettings"
 let kSegueIdSocial = "showSocial"
 let kSegueIdSocialOptions = "showSocialOptions"
 let kSegueIdSTwitter = "showSTwitter"
+let kSegueIdSFacebook = "showSFacebook"
 let kSegueIdSGoogleDrive = "showSGoogleDrive"
 let kSegueIdSGitHub = "showSGitHub"
 

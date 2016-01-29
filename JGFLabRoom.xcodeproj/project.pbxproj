@@ -27,6 +27,9 @@
 		1D30529F1C4FF0FE00F8C38E /* SocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */; };
 		1D3052A11C4FFE1800F8C38E /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */; };
 		1D30B0141C5A21CD00236E25 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D30B0131C5A21CD00236E25 /* KeychainWrapper.swift */; };
+		1D30B0181C5B7F1900236E25 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30B0171C5B7F1900236E25 /* FBSDKCoreKit.framework */; };
+		1D30B01A1C5B85C400236E25 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30B0191C5B85C400236E25 /* FBSDKLoginKit.framework */; };
+		1D30B01D1C5B881200236E25 /* SFacebookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D30B01C1C5B881200236E25 /* SFacebookViewController.swift */; };
 		1D8514961C47FA5100238A0D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514951C47FA5100238A0D /* Utils.swift */; };
 		1D8514981C48029400238A0D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514971C48029400238A0D /* Constants.swift */; };
 		1D85149F1C4CFAEB00238A0D /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D85149E1C4CFAEB00238A0D /* EventCell.xib */; };
@@ -86,6 +89,9 @@
 		1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
 		1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		1D30B0131C5A21CD00236E25 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
+		1D30B0171C5B7F1900236E25 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		1D30B0191C5B85C400236E25 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		1D30B01C1C5B881200236E25 /* SFacebookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFacebookViewController.swift; sourceTree = "<group>"; };
 		1D8514951C47FA5100238A0D /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		1D8514971C48029400238A0D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1D85149E1C4CFAEB00238A0D /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
@@ -117,6 +123,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D0914191C512BD800077813 /* Security.framework in Frameworks */,
+				1D30B0181C5B7F1900236E25 /* FBSDKCoreKit.framework in Frameworks */,
+				1D30B01A1C5B85C400236E25 /* FBSDKLoginKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,6 +178,7 @@
 				1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */,
 				1D2DF5401C56869D00A064AB /* SocialOptionsViewController.swift */,
 				1D2DF5381C563CBB00A064AB /* STwitterViewController.swift */,
+				1D30B01C1C5B881200236E25 /* SFacebookViewController.swift */,
 				1D2DF53A1C56476E00A064AB /* SGoogleDriveViewController.swift */,
 				1D2DF53E1C5681AD00A064AB /* SGitHubViewController.swift */,
 			);
@@ -179,6 +188,7 @@
 		1D2DF5371C563AB000A064AB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1D30B01B1C5B85CA00236E25 /* Facebook SDK */,
 				1D0914181C512BD800077813 /* Security.framework */,
 			);
 			name = Frameworks;
@@ -227,6 +237,15 @@
 				1D2DF5581C58D50900A064AB /* KeychainWrapper.m */,
 			);
 			name = KeychainWrapper;
+			sourceTree = "<group>";
+		};
+		1D30B01B1C5B85CA00236E25 /* Facebook SDK */ = {
+			isa = PBXGroup;
+			children = (
+				1D30B0171C5B7F1900236E25 /* FBSDKCoreKit.framework */,
+				1D30B0191C5B85C400236E25 /* FBSDKLoginKit.framework */,
+			);
+			name = "Facebook SDK";
 			sourceTree = "<group>";
 		};
 		6B090B371C46ED6E00DF0DDC = {
@@ -480,6 +499,7 @@
 				6B090B7C1C46F4BE00DF0DDC /* TypeListEvents.swift in Sources */,
 				1D8514961C47FA5100238A0D /* Utils.swift in Sources */,
 				1D2DF5431C56878B00A064AB /* SNetworks.swift in Sources */,
+				1D30B01D1C5B881200236E25 /* SFacebookViewController.swift in Sources */,
 				1D2DF54F1C58BAE500A064AB /* KeychainViewController.swift in Sources */,
 				6B090B441C46ED6E00DF0DDC /* AppDelegate.swift in Sources */,
 				6B090B761C46F22300DF0DDC /* EventViewController.swift in Sources */,
@@ -637,6 +657,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../../FacebookSDK",
+					"$(PROJECT_DIR)/JGFLabRoom/Resources",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/JGFLabRoom/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -651,6 +676,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../../FacebookSDK",
+					"$(PROJECT_DIR)/JGFLabRoom/Resources",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/JGFLabRoom/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

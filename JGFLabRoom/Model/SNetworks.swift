@@ -12,7 +12,7 @@ enum SNetworks {
     case Twitter, Facebook, GoogleDrive, Pinterest, Instagram, Vine, Spotify, LinkedIn, GitHub
     static let types: [SNetworks] = [.Twitter, .Facebook, .GoogleDrive, .Pinterest, .Instagram, .Vine, .Spotify, .LinkedIn, .GitHub]
     static let titles: [String] = ["Twitter", "Facebook", "Google Drive", "Pinterest", "Instagram", "Vine", "Spotify", "LinkedIn", "GitHub"]
-    static let segues: [String?] = [nil, nil, nil, nil, nil, nil, nil, nil, kSegueIdSGitHub]
+    static let segues: [String?] = [nil, kSegueIdSFacebook, nil, nil, nil, nil, nil, nil, kSegueIdSGitHub]
     
     static func getTitle(type: SNetworks) -> String {
         return SNetworks.titles[type.hashValue]

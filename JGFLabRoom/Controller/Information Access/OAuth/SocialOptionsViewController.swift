@@ -6,9 +6,25 @@
 //  Copyright © 2016 Josep Gonzalez Fernandez. All rights reserved.
 //
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// MARK: IMPORTANT: Facebook Login Process
+// In this example we are using methods from the FBSDKLoginManager to log in and log out our user.
+// In addition, there is code commented to show how would be adding the standard Login button provided by Facebook.
+//
+// Ref.: https://developers.facebook.com/docs/reference/ios/current/class/FBSDKLoginManager/
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import UIKit
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class SocialOptionsViewController: UITableViewController {
+    let FBLoginManager = FBSDKLoginManager()
+    // We could add a standard button provided by Facebook that we could customize later
+    //let fbLoginButton = FBSDKLoginButton()
+    
     var networkSelected: SNetworks?
     var results: [String]?
     var segues = SNetworks.segues
@@ -27,6 +43,25 @@ class SocialOptionsViewController: UITableViewController {
         Utils.cleanBackButtonTitle(navigationController)
         if let networkSelected = networkSelected {
             results = SNetworks.getOptionsArray(networkSelected)
+        }
+        
+        guard let networkSelected = networkSelected else {
+            return
+        }
+        
+        switch networkSelected {
+        case .Facebook:
+            /*
+             * This lines are in case you want to implement the standard button provided by Facebook in the framework FBSDKLoginKit
+             *
+            fbLoginButton.center = view.center
+            fbLoginButton.readPermissions = ["public_profile", "email", "user_friends"]
+            fbLoginButton.delegate = self
+            view.addSubview(fbLoginButton)
+            */
+            break
+        default:
+            break;
         }
     }
     
@@ -74,6 +109,8 @@ class SocialOptionsViewController: UITableViewController {
         var hasOAuthToken = false
         if let networkSelected = networkSelected {
             switch networkSelected {
+            case .Facebook:
+                hasOAuthToken = FBSDKAccessToken.currentAccessToken() != nil
             case .GitHub:
                 hasOAuthToken = GitHubAPIManager.sharedInstance.hasOAuthToken()
             default:
@@ -116,6 +153,34 @@ class SocialOptionsViewController: UITableViewController {
         
         guard indexPath.row > 0 else {
             switch networkSelected {
+            case .Facebook:
+                //fbLoginButton.sendActionsForControlEvents(.TouchUpInside)
+                
+                guard FBSDKAccessToken.currentAccessToken() != nil else {
+                    FBLoginManager.logInWithReadPermissions(
+                        ["public_profile", "email", "user_friends"],
+                        fromViewController: self,
+                        handler: {
+                            (result, error) in
+                            if(error != nil){
+                                print("Error during the login procress")
+                            }
+                            else if result.isCancelled {
+                                print("Authorization cancelled by the user")
+                            }
+                            else {
+                                // Authorization successful
+                                // print(FBSDKAccessToken.currentAccessToken())
+                                // No longer necessary as the token is already in the response
+                                print(result.token.tokenString)
+                            }
+                            self.tableView.reloadData()
+                    })
+                    return
+                }
+                
+                FBLoginManager.logOut()
+                tableView.reloadData()
             case .GitHub:
                 if GitHubAPIManager.sharedInstance.hasOAuthToken() {
                     return
@@ -145,6 +210,7 @@ class SocialOptionsViewController: UITableViewController {
             return
         }
         
+        // Sig in row selected for all Services
         switch networkSelected {
         case .GitHub:
             if !GitHubAPIManager.sharedInstance.hasOAuthToken() {
@@ -160,5 +226,23 @@ class SocialOptionsViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+}
+
+extension SocialOptionsViewController: FBSDKLoginButtonDelegate {
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+        guard result != nil else {
+            print("Facebook Login")
+            return
+        }
+        print("Facebook Login, result \(result.description)")
+    }
+    
+    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        print("Facebook Logout")
+    }
+    
+    func loginButtonWillLogin(loginButton: FBSDKLoginButton!) -> Bool {
+        return true
     }
 }
