@@ -13,6 +13,7 @@ class SocialOptionsViewController: UITableViewController {
     var results: [String]?
     var segues = SNetworks.segues
     var indexSelected: NSIndexPath?
+    var isOAuthLoginInProcess = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,11 +22,16 @@ class SocialOptionsViewController: UITableViewController {
     }
     
     private func setupController() {
+        Utils.registerNotificationWillEnterForeground(self, selector: "refreshUI")
         Utils.registerStandardXibForTableView(tableView, name: "cell")
         Utils.cleanBackButtonTitle(navigationController)
         if let networkSelected = networkSelected {
             results = SNetworks.getOptionsArray(networkSelected)
         }
+    }
+    
+    func refreshUI() {
+        tableView.reloadData()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -64,12 +70,31 @@ class SocialOptionsViewController: UITableViewController {
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
         }
         cell!.textLabel!.text = results![indexPath.row]
-        /*
-        cell?.accessoryType = .None
-        if let _ = segues[indexPath.row] {
-            cell?.accessoryType = .DisclosureIndicator
+        
+        var hasOAuthToken = false
+        if let networkSelected = networkSelected {
+            switch networkSelected {
+            case .GitHub:
+                hasOAuthToken = GitHubAPIManager.sharedInstance.hasOAuthToken()
+            default:
+                break;
+            }
         }
-        */
+        
+        switch indexPath.row {
+        case 0:
+            cell?.textLabel?.text = hasOAuthToken ? "Logged in!" : results![indexPath.row]
+            if isOAuthLoginInProcess {
+                cell?.textLabel?.text = "Logging in..."
+            }
+            cell?.textLabel?.alpha = hasOAuthToken ? 0.3 : 1
+            cell?.accessoryType = .None
+        default:
+            cell?.textLabel?.alpha = hasOAuthToken ? 1 : 0.3
+            cell?.accessoryType = hasOAuthToken ? .DisclosureIndicator : .None
+            break;
+        }
+        
         return cell!
     }
     
@@ -83,8 +108,52 @@ class SocialOptionsViewController: UITableViewController {
             self.indexSelected = nil
             return
         }
+        guard !isOAuthLoginInProcess else {
+            return
+        }
         
         self.indexSelected = indexPath
+        
+        guard indexPath.row > 0 else {
+            switch networkSelected {
+            case .GitHub:
+                if GitHubAPIManager.sharedInstance.hasOAuthToken() {
+                    return
+                }
+                
+                GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler = {
+                    (error) -> Void in
+                    
+                    self.isOAuthLoginInProcess = false
+                    
+                    if let receivedError = error {
+                        print(error)
+                        // TODO: handle error
+                        // Something went wrong, try again
+                    } else {
+                        // If we already have one, we'll get all repositories
+                        self.tableView.reloadData()
+                    }
+                }
+                
+                isOAuthLoginInProcess = true
+                GitHubAPIManager.sharedInstance.startOAuth2Login()
+            default:
+                break;
+            }
+            
+            return
+        }
+        
+        switch networkSelected {
+        case .GitHub:
+            if !GitHubAPIManager.sharedInstance.hasOAuthToken() {
+                return
+            }
+        default:
+            break;
+        }
+        
         performSegueWithIdentifier(segue, sender: tableView)
     }
     

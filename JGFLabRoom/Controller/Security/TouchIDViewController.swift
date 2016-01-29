@@ -19,7 +19,7 @@ class TouchIDViewController: UIViewController {
     var context = LAContext()
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        Utils.removeObserverForNotifications(self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -36,9 +36,7 @@ class TouchIDViewController: UIViewController {
     
     private func setupController() {
         Utils.cleanBackButtonTitle(navigationController)
-        
-        // Handle when the app becomes active, going from the background to the foreground
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"updateUI", name: UIApplicationWillEnterForegroundNotification, object: nil)
+        Utils.registerNotificationWillEnterForeground(self, selector: "updateUI")
         
         // Add right button in the navigation bar to repeat the login process so many times as we want
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: "updateUI")

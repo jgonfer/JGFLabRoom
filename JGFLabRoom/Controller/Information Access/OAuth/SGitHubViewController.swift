@@ -22,8 +22,14 @@ class SGitHubViewController: UITableViewController {
     var results: [Repo]?
     var indexSelected: NSIndexPath?
     var timer: NSTimer?
+    var timerCheck: NSTimer?
     
     var isOAuthLoginInProcess = false
+    
+    deinit {
+        Utils.removeObserverForNotifications(self)
+        cancelTimers()
+    }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -38,19 +44,27 @@ class SGitHubViewController: UITableViewController {
         setupController()
     }
     
-    deinit {
-        cancelTimerDownloading()
-    }
-    
     private func setupController() {
         Utils.registerStandardXibForTableView(tableView, name: "cell")
         Utils.cleanBackButtonTitle(navigationController)
+        Utils.registerNotificationWillEnterForeground(self, selector: "delayCechForAccessToken")
         startTimerDownloading()
         
         guard let indexSelected = indexSelected else {
             return
         }
         title = SNetworks.getOptionsArray(.GitHub)[indexSelected.row]
+    }
+    
+    func delayCechForAccessToken() {
+        timerCheck = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "checkForAccessToken", userInfo: nil, repeats: false)
+    }
+    
+    func checkForAccessToken() {
+        guard GitHubAPIManager.sharedInstance.hasOAuthToken() else {
+            self.navigationController?.popViewControllerAnimated(true)
+            return
+        }
     }
     
     func loadInitialData() {
@@ -61,8 +75,7 @@ class SGitHubViewController: UITableViewController {
                 
                 self.isOAuthLoginInProcess = false
                 
-                print("handlin stuff")
-                if let receivedError = error {
+                if let _ = error {
                     print(error)
                     // TODO: handle error
                     // Something went wrong, try again
@@ -95,8 +108,9 @@ class SGitHubViewController: UITableViewController {
         timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "checkDownloadingState", userInfo: nil, repeats: true)
     }
     
-    private func cancelTimerDownloading() {
+    private func cancelTimers() {
         timer?.invalidate()
+        timerCheck?.invalidate()
     }
     
     func checkDownloadingState() {
@@ -179,8 +193,18 @@ class SGitHubViewController: UITableViewController {
 }
 
 extension SGitHubViewController: ConnectionHelperDelegate {
-    func connectionReposFinished(repos: [Repo]?) {
+    func connectionReposFinished(repos: [Repo]?, error: NSError?) {
         results = repos
         tableView.reloadData()
+        
+        if let error = error {
+            switch error.code {
+            case kErrorCodeGitHubBadCredentials:
+                loadInitialData()
+                print(error.description)
+            default:
+                break
+            }
+        }
     }
 }

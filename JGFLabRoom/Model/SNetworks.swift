@@ -21,23 +21,23 @@ enum SNetworks {
     static func getOptionsArray(networkType: SNetworks) -> [String] {
         switch networkType {
         case .Twitter:
-            return ["Sign in with Twitter"]
+            return ["Sign in"]
         case .Facebook:
-            return ["Sign in with Facebook"]
+            return ["Sign in"]
         case .GoogleDrive:
-            return ["Sign in with Google Drive"]
+            return ["Sign in"]
         case .Pinterest:
-            return ["Sign in with Pinterest"]
+            return ["Sign in"]
         case .Instagram:
-            return ["Sign in with Instagram"]
+            return ["Sign in"]
         case .Vine:
-            return ["Sign in with Vine"]
+            return ["Sign in"]
         case .Spotify:
-            return ["Sign in with Spotify"]
+            return ["Sign in"]
         case .LinkedIn:
-            return ["Sign in with LinkedIn"]
+            return ["Sign in"]
         case .GitHub:
-            return ["Sign in with GitHub",
+            return ["Sign in",
                 "View repositories"]
         }
     }

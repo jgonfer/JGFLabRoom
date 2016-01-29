@@ -9,7 +9,7 @@
 import UIKit
 
 
-// MARK: API KEY & SECRET
+// MARK: API Key & Secret
 // This information shouldn't be stored in the app.
 
 let kApiTwitterConsumerKey = "OYPHJXmYb1Cxy17dzBT4Ka7XB"
@@ -23,6 +23,10 @@ let kApiGoogleDriveConsumerSecret = "ghNixvFtLYwaRtWvlv8Mbzkh"
 let kApiGitHubClientId = "5072d51c60d715e79c95"
 let kApiGitHubClientSecret = "28af606db9df21a2ac4c4eb72ddd00306790fc00"
 
+
+// MARK: Keychain Keys
+
+let kKeychainKeyGitHub = "github"
 
 // MARK: Apps URLs
 
@@ -38,7 +42,7 @@ let kUrlGitHubAuth = "https://github.com/login/oauth/authorize?client_id=\(kApiG
 let kUrlGitHubGetToken = "https://github.com/login/oauth/access_token"
 
 
-// MARK: SEGUES IDENTIFIER
+// MARK: Segues Identifier
 
 let kSegueIdEventKit = "showEventKit"
 let kSegueIdListEvents = "showListEvents"
@@ -65,12 +69,15 @@ let kErrorDomainGitHub = "GitHub Error"
 
 let kErrorCodeJSONSerialization = 1
 let kErrorCodeGitHubNoToken = 2
+let kErrorCodeGitHubBadCredentials = 3
 
 // MARK: Error Messages
 
-let kErrorMessagesJSONSerialize = "Could not serialize JSON object"
-let kErrorMessagesRetryRequest = "Please retry your request"
-let kErrorMessagesNoToken = "There is no token available"
+let kErrorMessageJSONSerialize = "Could not serialize JSON object"
+let kErrorMessageRetryRequest = "Please retry your request"
+let kErrorMessageNoToken = "There is no token available"
+let kErrorMessageLogInAgain = "Please log in again"
+let kErrorMessageGitHubBadCredentials = "Bad credentials"
 
 
 // MARK: Colors

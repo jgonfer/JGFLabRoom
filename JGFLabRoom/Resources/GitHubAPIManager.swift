@@ -13,14 +13,24 @@ class GitHubAPIManager {
     static let sharedInstance = GitHubAPIManager ()
     
     var OAuthTokenCompletionHandler:(NSError? -> Void)?
-    var OAuthToken: String? /*{
+    var OAuthToken: String? {
         set {
-
+            if let valueToSave = newValue {
+                KeychainWrapper.setString(valueToSave, forKey: kKeychainKeyGitHub)
+            }
+            else { // Is set to nil, so we delete the existing value for the GitHub key
+                KeychainWrapper.removeObjectForKey(kKeychainKeyGitHub)
+            }
         }
         get {
-            
+            // Try to load from keychain
+            let value = KeychainWrapper.stringForKey(kKeychainKeyGitHub)
+            if let token =  value {
+                return token
+            }
+            return nil
         }
-    }*/
+    }
     
     func hasOAuthToken() -> Bool {
         if let token = self.OAuthToken {
@@ -76,7 +86,7 @@ class GitHubAPIManager {
             }
         } else {
             if let completionHandler = self.OAuthTokenCompletionHandler {
-                let cError = NSError(domain: kErrorDomainGitHub, code: kErrorCodeGitHubNoToken, userInfo: [NSLocalizedDescriptionKey: kErrorMessagesNoToken, NSLocalizedRecoverySuggestionErrorKey: kErrorMessagesRetryRequest])
+                let cError = NSError(domain: kErrorDomainGitHub, code: kErrorCodeGitHubNoToken, userInfo: [NSLocalizedDescriptionKey: kErrorMessageNoToken, NSLocalizedRecoverySuggestionErrorKey: kErrorMessageRetryRequest])
                 completionHandler(cError)
             }
         }

@@ -32,7 +32,18 @@ class Utils {
     }
     
     
-    // MARK: TABLEVIEW Management
+    // MARK: NSNotificationCenter Management
+    
+    class func registerNotificationWillEnterForeground(observer: AnyObject, selector: Selector) {
+        // Handle when the app becomes active, going from the background to the foreground
+        NSNotificationCenter.defaultCenter().addObserver(observer, selector: selector, name: UIApplicationWillEnterForegroundNotification, object: nil)
+    }
+    
+    class func removeObserverForNotifications(observer: AnyObject) {
+        NSNotificationCenter.defaultCenter().removeObserver(observer)
+    }
+    
+    // MARK: TableView Management
     
     class func registerStandardXibForTableView(tableView: UITableView, name: String) {
         // Registration of a standard UITableViewCell with identifier @name. It'll have standard parameters like cell.textLabel, cell.detailTextLabel and cell.imageView
@@ -44,7 +55,7 @@ class Utils {
         tableView.registerNib(UINib(nibName: name, bundle: nil), forCellReuseIdentifier: name)
     }
     
-    // MARK: NAVIGATION BAR Management
+    // MARK: Navigation Bar Management
     
     class func cleanBackButtonTitle(nav: UINavigationController?) {
         // Replacement of the existing button in the navigationBar
@@ -52,7 +63,7 @@ class Utils {
     }
     
     
-    // MARK: DATES Management
+    // MARK: Dates Management
     
     class func getStartEndDateForYear(year: Int) -> (NSDate, NSDate)? {
         // We get the @year period by setting the start date of the @year, and the end date of the @year
@@ -148,7 +159,7 @@ class Utils {
     }
     
     
-    // MARK: COMMON CRYPTO Management ()
+    // MARK: Common Crypto Management ()
     // MARK: Read this
     // 1) To get working Common Crypto you need implement a Bridging-Header.h in your project
     // 2) Then, import in this new file the library with this line: "#import <CommonCrypto/CommonCrypto.h>"

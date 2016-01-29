@@ -13,9 +13,7 @@ protocol ConnectionHelperDelegate {
     func connectionAppsFinished(apps: [App]?)
     
     func connectionGetTokenFinished(accessToken: String?)
-    func connectionReposFinished(repos: [Repo]?)
-    
-    func connectionFinishedWithError(error: NSError?)
+    func connectionReposFinished(repos: [Repo]?, error: NSError?)
 }
 
 extension ConnectionHelperDelegate {
@@ -23,9 +21,7 @@ extension ConnectionHelperDelegate {
     func connectionAppsFinished(apps: [App]?) {}
     
     func connectionGetTokenFinished(accessToken: String?) {}
-    func connectionReposFinished(repos: [Repo]?) {}
-    
-    func connectionFinishedWithError(error: NSError?) {}
+    func connectionReposFinished(repos: [Repo]?, error: NSError?) {}
 }
 
 class ConnectionHelper: NSObject, NSURLConnectionDelegate {
@@ -116,8 +112,8 @@ class ConnectionHelper: NSObject, NSURLConnectionDelegate {
                 self.updatedStateForConnection(apps, working: working)
             })
         case kUrlGitHubRepos:
-            parseUrlGitHubRepos(queue: Utils.GlobalUserInitiatedQueue, completion: { (repos, working) -> () in
-                self.delegate?.connectionReposFinished(repos)
+            parseUrlGitHubRepos(queue: Utils.GlobalUserInitiatedQueue, completion: { (repos, error) -> () in
+                self.delegate?.connectionReposFinished(repos, error: error)
             })
         case kUrlGitHubGetToken:
             parseUrlGitHubGetToken(queue: Utils.GlobalUserInitiatedQueue, completion: { accessToken -> () in
@@ -183,7 +179,7 @@ class ConnectionHelper: NSObject, NSURLConnectionDelegate {
         }
     }
     
-    private func parseUrlGitHubRepos(queue queue: dispatch_queue_t, completion: (repos: [Repo]?, working: Bool) -> ()) {
+    private func parseUrlGitHubRepos(queue queue: dispatch_queue_t, completion: (repos: [Repo]?, error: NSError?) -> ()) {
         dispatch_async(queue) { () -> Void in
             do {
                 if let repos = try NSJSONSerialization.JSONObjectWithData(self.data, options: NSJSONReadingOptions.MutableContainers) as? Array<NSDictionary> {
@@ -214,14 +210,31 @@ class ConnectionHelper: NSObject, NSURLConnectionDelegate {
                         reposStored?.append(repoStored)
                         /*
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            completion(repos: reposStored, working: true)
+                        completion(repos: reposStored, working: true)
                         })
                         */
                         //print(app)
                     }
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        completion(repos: reposStored, working: false)
+                        completion(repos: reposStored, error: nil)
                     })
+                } else if let error = try NSJSONSerialization.JSONObjectWithData(self.data, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary {
+                    print(error)
+                    
+                    guard let message = error["message"] as? String else {
+                        return
+                    }
+                    
+                    switch message {
+                    case kErrorMessageGitHubBadCredentials:
+                        KeychainWrapper.removeObjectForKey(kKeychainKeyGitHub)
+                        let cError = NSError(domain: kErrorDomainConnection, code: kErrorCodeGitHubBadCredentials, userInfo: [NSLocalizedDescriptionKey: kErrorMessageGitHubBadCredentials, NSLocalizedRecoverySuggestionErrorKey: kErrorMessageLogInAgain])
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            completion(repos: nil, error: cError)
+                        })
+                    default:
+                        break;
+                    }
                 }
             } catch {
                 print("Error: \(error)")
@@ -249,7 +262,7 @@ class ConnectionHelper: NSObject, NSURLConnectionDelegate {
                 }
             } catch {
                 if let completionHandler = self.connectionCompletionHandler {
-                    let cError = NSError(domain: kErrorDomainConnection, code: kErrorCodeJSONSerialization, userInfo: [NSLocalizedDescriptionKey: kErrorMessagesJSONSerialize, NSLocalizedRecoverySuggestionErrorKey: kErrorMessagesRetryRequest])
+                    let cError = NSError(domain: kErrorDomainConnection, code: kErrorCodeJSONSerialization, userInfo: [NSLocalizedDescriptionKey: kErrorMessageJSONSerialize, NSLocalizedRecoverySuggestionErrorKey: kErrorMessageRetryRequest])
                     completionHandler(nil, cError)
                 }
                 print("Error: \(error)")
