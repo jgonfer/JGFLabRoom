@@ -28,11 +28,11 @@ class ListEventsViewController: UITableViewController {
     override func viewDidLayoutSubviews() {
         if eventsChecked {
             eventsChecked = false
-            setupController()
         }
     }
     
     private func setupController() {
+        Utils.registerNotificationWillEnterForeground(self, selector: "viewDidLoad")
         Utils.registerStandardXibForTableView(tableView, name: "cell")
         Utils.registerCustomXibForTableView(tableView, name: reuseIdentifier)
         Utils.cleanBackButtonTitle(navigationController)
