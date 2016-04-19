@@ -60,11 +60,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {        
+        GitHubAPIManager.sharedInstance.processOAuthStep1Response(url)
+        
         return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
     }
 
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+        // MARK: IMPORTANT!
+        // This method isn't going to be called because application(:url:sourceApplication:annotation:) will handle the triggered event from Safari
         GitHubAPIManager.sharedInstance.processOAuthStep1Response(url)
         return true
     }
