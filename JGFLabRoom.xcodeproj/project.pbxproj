@@ -27,8 +27,6 @@
 		1D30529F1C4FF0FE00F8C38E /* SocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */; };
 		1D3052A11C4FFE1800F8C38E /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */; };
 		1D30B0141C5A21CD00236E25 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D30B0131C5A21CD00236E25 /* KeychainWrapper.swift */; };
-		1D30B0181C5B7F1900236E25 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30B0171C5B7F1900236E25 /* FBSDKCoreKit.framework */; };
-		1D30B01A1C5B85C400236E25 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30B0191C5B85C400236E25 /* FBSDKLoginKit.framework */; };
 		1D30B01D1C5B881200236E25 /* SFacebookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D30B01C1C5B881200236E25 /* SFacebookViewController.swift */; };
 		1D8514961C47FA5100238A0D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514951C47FA5100238A0D /* Utils.swift */; };
 		1D8514981C48029400238A0D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8514971C48029400238A0D /* Constants.swift */; };
@@ -47,6 +45,8 @@
 		6B090B781C46F46500DF0DDC /* ListEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B090B771C46F46500DF0DDC /* ListEventsViewController.swift */; };
 		6B090B7A1C46F49500DF0DDC /* EventHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B090B791C46F49500DF0DDC /* EventHelper.swift */; };
 		6B090B7C1C46F4BE00DF0DDC /* TypeListEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B090B7B1C46F4BE00DF0DDC /* TypeListEvents.swift */; };
+		6B93C9761CC6C5BF00B52A7F /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B93C9741CC6C5BF00B52A7F /* FBSDKCoreKit.framework */; };
+		6B93C9771CC6C5BF00B52A7F /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B93C9751CC6C5BF00B52A7F /* FBSDKLoginKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,8 +89,6 @@
 		1D30529E1C4FF0FE00F8C38E /* SocialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialViewController.swift; sourceTree = "<group>"; };
 		1D3052A01C4FFE1800F8C38E /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		1D30B0131C5A21CD00236E25 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
-		1D30B0171C5B7F1900236E25 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		1D30B0191C5B85C400236E25 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		1D30B01C1C5B881200236E25 /* SFacebookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFacebookViewController.swift; sourceTree = "<group>"; };
 		1D8514951C47FA5100238A0D /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		1D8514971C48029400238A0D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -115,6 +113,8 @@
 		6B090B771C46F46500DF0DDC /* ListEventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListEventsViewController.swift; sourceTree = "<group>"; };
 		6B090B791C46F49500DF0DDC /* EventHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventHelper.swift; sourceTree = "<group>"; };
 		6B090B7B1C46F4BE00DF0DDC /* TypeListEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeListEvents.swift; sourceTree = "<group>"; };
+		6B93C9741CC6C5BF00B52A7F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		6B93C9751CC6C5BF00B52A7F /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,8 +123,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D0914191C512BD800077813 /* Security.framework in Frameworks */,
-				1D30B0181C5B7F1900236E25 /* FBSDKCoreKit.framework in Frameworks */,
-				1D30B01A1C5B85C400236E25 /* FBSDKLoginKit.framework in Frameworks */,
+				6B93C9761CC6C5BF00B52A7F /* FBSDKCoreKit.framework in Frameworks */,
+				6B93C9771CC6C5BF00B52A7F /* FBSDKLoginKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,8 +242,8 @@
 		1D30B01B1C5B85CA00236E25 /* Facebook SDK */ = {
 			isa = PBXGroup;
 			children = (
-				1D30B0171C5B7F1900236E25 /* FBSDKCoreKit.framework */,
-				1D30B0191C5B85C400236E25 /* FBSDKLoginKit.framework */,
+				6B93C9741CC6C5BF00B52A7F /* FBSDKCoreKit.framework */,
+				6B93C9751CC6C5BF00B52A7F /* FBSDKLoginKit.framework */,
 			);
 			name = "Facebook SDK";
 			sourceTree = "<group>";
@@ -419,7 +419,7 @@
 				TargetAttributes = {
 					6B090B3F1C46ED6E00DF0DDC = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 9F9N24NG9R;
+						DevelopmentTeam = 26PPBQ4G57;
 					};
 					6B090B531C46ED6E00DF0DDC = {
 						CreatedOnToolsVersion = 7.2;
